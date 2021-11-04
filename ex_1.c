@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 
-_CRT_SECURE_NO_WARNINGS;
-
 void hello(){
     printf("hello \\/\\/orld %%d\\n\n");
 }
