@@ -16,7 +16,7 @@
 * Function Operation: using the printf function and double // %% \\
 ******************/
 void hello(){
-    printf("hello \\/\\/orld %%d\\n\n");
+    printf("\"hello \\/\\/orld %%d\\n\"\n");
 }
 
 
@@ -37,7 +37,7 @@ void distance(){
     printf("Enter y2:\n");
     scanf("%lf", &y2);
     dist = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-    printf("The distance between the points is: %lf\n", dist);
+    printf("The distance between the points is: %.4lf\n", dist);
 }
 
 
