@@ -105,23 +105,38 @@ void basetodec(){
 
 
 void plus(){
-    int long n1, n2, max, result, carry = 0, cnt = 1, n1base2, n2base2;
+    int long n1, n2, max, min, result = 0, tmp_carry = 0, carry = 0, tmp_sum, last_round = 0;
+    int cnt = 0;
     printf("Enter 2 binary numbers:\n");
     scanf("%ld %ld", &n1, &n2);
+    max = n1 > n2 ? n1 : n2;
+    min = n1 > n2 ? n2 : n1;
     if (n1 < 0 || n2 < 0){
         printf("Error!\n");
         return;
     }
     while (1){
-        if (n1 < 1){
+        if (n1 % 2 > 1 || n2 % 2 > 1){
             printf("Error!\n");
             return;
         }
-        carry += ((n1 % 10) && (n2 % 10)) * pow(10, cnt)
-        result += (((n1 % 10) && !(n2 % 10)) || (!(n1 % 10) && (n2 % 10)) ) * pow(10, cnt);
+        if (n1 == 0 && n2 == 0)
+            last_round = 1;
+        carry += tmp_carry * pow(10, cnt);
+        tmp_sum = (n1 % 10) + (n2 % 10) + tmp_carry;
+        tmp_carry = tmp_sum / 2;
+        result += (tmp_sum % 2) * pow(10, cnt);
         n1 /= 10;
+        n2 /= 10;
         cnt++;
+        if (last_round)
+            break;
     }
+    printf("%0*d\n%0*d\n+\n%0*d\n", cnt, carry, cnt, max, cnt, min);
+    for (int i = 0; i < cnt; ++i) {
+        printf("-");
+    }
+    printf("\n%d\n", result);
 }
 
 
