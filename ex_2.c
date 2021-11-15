@@ -69,6 +69,10 @@ void dectobase(){
     int long decnum, result = 0;
     printf("Enter base and a number:\n");
     scanf("%d %ld", &base, &decnum);
+    if (decnum < 0) {
+        printf("Error!\n");
+        return;
+    }
     while (1){
         if (decnum == 0)
             break;
@@ -82,11 +86,41 @@ void dectobase(){
 
 void basetodec(){
     int base, cnt = 0;
-    int long decnum, result = 0;
+    int long basecnum, result = 0;
     printf("Enter base and a number:\n");
-    scanf("%d %ld", &base, &decnum);
+    scanf("%d %ld", &base, &basecnum);
+    if (basecnum < 0){
+        printf("Error!\n");
+        return;
+    }
     while (1){
+        if (basecnum == 0)
+            break;
+        result += (basecnum % 10) * pow(base, cnt);
+        basecnum /= 10;
+        cnt++;
+    }
+    printf("%ld\n", result);
+}
 
+
+void plus(){
+    int long n1, n2, max, result, carry = 0, cnt = 1, n1base2, n2base2;
+    printf("Enter 2 binary numbers:\n");
+    scanf("%ld %ld", &n1, &n2);
+    if (n1 < 0 || n2 < 0){
+        printf("Error!\n");
+        return;
+    }
+    while (1){
+        if (n1 < 1){
+            printf("Error!\n");
+            return;
+        }
+        carry += ((n1 % 10) && (n2 % 10)) * pow(10, cnt)
+        result += (((n1 % 10) && !(n2 % 10)) || (!(n1 % 10) && (n2 % 10)) ) * pow(10, cnt);
+        n1 /= 10;
+        cnt++;
     }
 }
 
@@ -105,9 +139,9 @@ int main(){
             case 3:
                 basetodec();
                 break;
-//            case 4:
-//                plus();
-//                break;
+            case 4:
+                plus();
+                break;
 //            case 5:
 //                shape();
 //                break;
