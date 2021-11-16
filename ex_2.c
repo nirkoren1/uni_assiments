@@ -9,6 +9,12 @@
 #include <math.h>
 
 
+/******************
+* Function Name: empty_buffer
+* Input: none
+* Output: none
+* Function Operation: cleans the buffer with scanf for error measures
+******************/
 void empty_buffer(){
     char c;
     while (1){
@@ -19,26 +25,12 @@ void empty_buffer(){
 }
 
 
-int init(){
-    int key;
-    while (1){
-        printf("Choose an option:\n"
-               "        1. hexadecimal to Decimal\n"
-               "        2. Decimal to Base\n"
-               "        3. Base to Decimal\n"
-               "        4. PLUS\n"
-               "        5. Shape\n"
-               "        6. Count bits\n"
-               "        7. Exit\n");
-        scanf("%d", &key);
-        if (key <= 7)
-            return key;
-        printf("Wrong option!\n");
-
-    }
-}
-
-
+/******************
+* Function Name: hextodec
+* Input: int long hexadecimal number
+* Output: the number in decimal base
+* Function Operation: using the definition of hexa number
+******************/
 void hextodec(){
     char hexnum;
     int decnum = 0, cnt = -1, pow16 = 1;
@@ -71,6 +63,12 @@ void hextodec(){
 }
 
 
+/******************
+* Function Name: dectobase
+* Input: int base, int long decimal number
+* Output: the number in the base specified
+* Function Operation: deviation and % base
+******************/
 void dectobase(){
     int base, cnt = 0;
     int long decnum, result = 0;
@@ -91,6 +89,12 @@ void dectobase(){
 }
 
 
+/******************
+* Function Name: basetodec
+* Input: int base, int long in the base number
+* Output: the number in decimal base
+* Function Operation: deviation and % 10
+******************/
 void basetodec(){
     int base, cnt = 0;
     int long basecnum, result = 0;
@@ -111,6 +115,12 @@ void basetodec(){
 }
 
 
+/******************
+* Function Name: plus
+* Input: int binary, int binary
+* Output: the process of adding the two binary numbers
+* Function Operation: regular adding binary numbers as seen in the class
+******************/
 void plus(){
     int long n1, n2, max, min, result = 0, tmp_carry = 0, carry = 0, tmp_sum, last_round = 0;
     int cnt = 0;
@@ -150,6 +160,12 @@ void plus(){
 }
 
 
+/******************
+* Function Name: shape
+* Input: int n
+* Output: a butterfly made of * covered by # with width 2n
+* Function Operation: placing "#", "*" and " " with a certain logic to the line index
+******************/
 void shape(){
     int n, width;
     printf("Enter a number:\n");
@@ -212,6 +228,12 @@ void shape(){
 }
 
 
+/******************
+* Function Name: cntbits
+* Input: int number
+* Output: the number of times that 1 appears in his binary presentation
+* Function Operation:
+******************/
 void cntbits(){
     int long a, result = 0;
     printf("enter a number:\n");
@@ -227,50 +249,17 @@ void cntbits(){
 }
 
 
-void shape2(){
-    int n, width, sub;
-    printf("Enter a number:\n");
-    scanf("%d", &n);
-    width = 2 * n + 2;
-    for (int i = 0; i <= 2 * n; i++) {
-        printf("#");
-        for (int j = 0; j < i; j++) {
-            printf("*");
-        }
-        if (i == 0 || i == 2 * n){
-            printf("##");
-            sub = 2;
-        }else if (i != n) {
-            printf("#");
-            sub = 1;
-        } else
-            sub = 0;
-        for (int j = 0; j < width - 2 * i - 2 * sub - 2; j++) {
-            printf(" ");
-        }
-        for (int j = 0; j < sub; j++) {
-            printf("#");
-        }
-        for (int j = 0; j < i; j++) {
-            printf("*");
-        }
-        printf("#");
-        printf("\n");
-    }
-}
-
-
 int main(){
     int key = 0;
     while (1) {
         printf("Choose an option:\n"
-               "        1. hexadecimal to Decimal\n"
-               "        2. Decimal to Base\n"
-               "        3. Base to Decimal\n"
-               "        4. PLUS\n"
-               "        5. Shape\n"
-               "        6. Count bits\n"
-               "        7. Exit\n");
+               "\t1. hexaDecimal to Decimal\n"
+               "\t2. Decimal to Base\n"
+               "\t3. Base to Decimal\n"
+               "\t4. PLUS\n"
+               "\t5. Shape\n"
+               "\t6. Count bits\n"
+               "\t7. Exit\n");
         scanf("%d", &key);
         switch (key) {
             case 1:
