@@ -152,6 +152,10 @@ int main(){
                "        6. Count bits\n"
                "        7. Exit\n");
         scanf("%d", &key);
+        if (key < 1 || key > 7){
+            printf("Wrong option!\n");
+            continue;
+        }
         switch (key) {
             case 1:
                 hextodec();
