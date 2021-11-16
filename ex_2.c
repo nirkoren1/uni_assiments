@@ -212,6 +212,54 @@ void shape(){
 }
 
 
+void cntbits(){
+    int long a, result = 0;
+    printf("enter a number:\n");
+    scanf("%ld", &a);
+    while (1){
+        if (a % 2 == 1)
+            result += 1;
+        a /= 2;
+        if (a == 0)
+            break;
+    }
+    printf("no of bits those are 1 in its binary representation: %ld\n", result);
+}
+
+
+void shape2(){
+    int n, width, sub;
+    printf("Enter a number:\n");
+    scanf("%d", &n);
+    width = 2 * n + 2;
+    for (int i = 0; i <= 2 * n; i++) {
+        printf("#");
+        for (int j = 0; j < i; j++) {
+            printf("*");
+        }
+        if (i == 0 || i == 2 * n){
+            printf("##");
+            sub = 2;
+        }else if (i != n) {
+            printf("#");
+            sub = 1;
+        } else
+            sub = 0;
+        for (int j = 0; j < width - 2 * i - 2 * sub - 2; j++) {
+            printf(" ");
+        }
+        for (int j = 0; j < sub; j++) {
+            printf("#");
+        }
+        for (int j = 0; j < i; j++) {
+            printf("*");
+        }
+        printf("#");
+        printf("\n");
+    }
+}
+
+
 int main(){
     int key = 0;
     while (1) {
@@ -240,9 +288,9 @@ int main(){
             case 5:
                 shape();
                 break;
-//            case 6:
-//                cntbits();
-//                break;
+            case 6:
+                cntbits();
+                break;
             case 7:
                 return 0;
             default:
