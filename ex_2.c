@@ -8,6 +8,17 @@
 #include <stdio.h>
 #include <math.h>
 
+
+void empty_buffer(){
+    int c;
+    while (1){
+        scanf("%c", &c);
+        if (c == '\n')
+            break;
+    }
+}
+
+
 int init(){
     int key;
     while (1){
@@ -50,11 +61,7 @@ void hextodec(){
         else{
             printf("Error!\n");
             decnum = 0;
-            while (1){
-                scanf("%c", &hexnum);
-                if (hexnum == '\n')
-                    break;
-            }
+            empty_buffer();
             break;
         }
     }
@@ -137,11 +144,12 @@ void plus(){
         printf("-");
     }
     printf("\n%d\n", result);
+    empty_buffer();
 }
 
 
 int main(){
-    int key;
+    char key;
     while (1) {
         printf("Choose an option:\n"
                "        1. hexadecimal to Decimal\n"
@@ -151,22 +159,18 @@ int main(){
                "        5. Shape\n"
                "        6. Count bits\n"
                "        7. Exit\n");
-        scanf("%d", &key);
-        if (key < 1 || key > 7){
-            printf("Wrong option!\n");
-            continue;
-        }
+        scanf("%c", &key);
         switch (key) {
-            case 1:
+            case '1':
                 hextodec();
                 break;
-            case 2:
+            case '2':
                 dectobase();
                 break;
-            case 3:
+            case '3':
                 basetodec();
                 break;
-            case 4:
+            case '4':
                 plus();
                 break;
 //            case 5:
@@ -175,7 +179,7 @@ int main(){
 //            case 6:
 //                cntbits();
 //                break;
-            case 7:
+            case '7':
                 return 0;
             default:
                 printf("Wrong option!\n");
