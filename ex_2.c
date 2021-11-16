@@ -116,7 +116,7 @@ void plus(){
         return;
     }
     while (1){
-        if (n1 % 2 > 1 || n2 % 2 > 1){
+        if (n1 % 10 > 1 || n2 % 10 > 1){
             printf("Error!\n");
             return;
         }
@@ -143,7 +143,15 @@ void plus(){
 int main(){
     int key;
     while (1) {
-        key = init();
+        printf("Choose an option:\n"
+               "        1. hexadecimal to Decimal\n"
+               "        2. Decimal to Base\n"
+               "        3. Base to Decimal\n"
+               "        4. PLUS\n"
+               "        5. Shape\n"
+               "        6. Count bits\n"
+               "        7. Exit\n");
+        scanf("%d", &key);
         switch (key) {
             case 1:
                 hextodec();
@@ -163,8 +171,11 @@ int main(){
 //            case 6:
 //                cntbits();
 //                break;
-            default:
+            case 7:
                 return 0;
+            default:
+                printf("Wrong option!\n");
+                break;
         }
     }
 }
