@@ -162,8 +162,53 @@ void shape(){
         }
         printf(" ");
     }
+    if (n != 0) {
+        printf("\n");
+        for (int i = 1; i <= n - 1; i++) {
+            for (int j = 1; j <= width; j++) {
+                if (j == 1 || j == width || j == 2 + i || j == width - 1 - i) {
+                    printf("#");
+                    continue;
+                }
+                if ((j >= 2 && j < 2 + i) || (j > width - 1 - i && j < width)) {
+                    printf("*");
+                    continue;
+                }
+                printf(" ");
+            }
+            printf("\n");
+        }
+        for (int i = 0; i < width; i++) {
+            if (i == 0 || i == width - 1)
+                printf("#");
+            else
+                printf("*");
+        }
+        printf("\n");
+        for (int i = n - 1; i >= 1; i--) {
+            for (int j = 1; j <= width; j++) {
+                if (j == 1 || j == width || j == 2 + i || j == width - 1 - i) {
+                    printf("#");
+                    continue;
+                }
+                if ((j >= 2 && j < 2 + i) || (j > width - 1 - i && j < width)) {
+                    printf("*");
+                    continue;
+                }
+                printf(" ");
+            }
+            printf("\n");
+        }
+    } else
+        printf("\n");
+    for (int i = 0; i < width; i++) {
+        if (i <= 2 || width - i <= 3) {
+            printf("#");
+            continue;
+        }
+        printf(" ");
+    }
     printf("\n");
-
 }
 
 
