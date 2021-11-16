@@ -10,11 +10,11 @@
 
 
 void empty_buffer(){
-    int c;
+    char c;
     while (1){
         scanf("%c", &c);
         if (c == '\n')
-            break;
+            return;
     }
 }
 
@@ -120,11 +120,13 @@ void plus(){
     min = n1 > n2 ? n2 : n1;
     if (n1 < 0 || n2 < 0){
         printf("Error!\n");
+        empty_buffer();
         return;
     }
     while (1){
         if (n1 % 10 > 1 || n2 % 10 > 1){
             printf("Error!\n");
+            empty_buffer();
             return;
         }
         if (n1 == 0 && n2 == 0)
@@ -148,8 +150,25 @@ void plus(){
 }
 
 
+void shape(){
+    int n, width;
+    printf("Enter a number:\n");
+    scanf("%d", &n);
+    width = 2 * n + 2;
+    for (int i = 0; i < width; i++) {
+        if (i <= 2 || width - i <= 3) {
+            printf("#");
+            continue;
+        }
+        printf(" ");
+    }
+    printf("\n");
+
+}
+
+
 int main(){
-    char key;
+    int key = 0;
     while (1) {
         printf("Choose an option:\n"
                "        1. hexadecimal to Decimal\n"
@@ -159,30 +178,31 @@ int main(){
                "        5. Shape\n"
                "        6. Count bits\n"
                "        7. Exit\n");
-        scanf("%c", &key);
+        scanf("%d", &key);
         switch (key) {
-            case '1':
+            case 1:
                 hextodec();
                 break;
-            case '2':
+            case 2:
                 dectobase();
                 break;
-            case '3':
+            case 3:
                 basetodec();
                 break;
-            case '4':
+            case 4:
                 plus();
                 break;
-//            case 5:
-//                shape();
-//                break;
+            case 5:
+                shape();
+                break;
 //            case 6:
 //                cntbits();
 //                break;
-            case '7':
+            case 7:
                 return 0;
             default:
                 printf("Wrong option!\n");
+                empty_buffer();
                 break;
         }
     }
