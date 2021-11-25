@@ -24,19 +24,27 @@ void prime(){
         if (is_prime(i))
             printf("%d ", i);
     }
+    printf("\n");
 }
 
 
 void gold(){
-    int prime_arr[SIZE];
+    int prime_arr[SIZE] = {0};
     for (int j = 0; j < SIZE; j++) {
         for (int i = 2; i < SIZE; i++) {
             if (is_prime(i))
                 prime_arr[i] = i;
         }
     }
-    for (int i = 0; i < SIZE; i++) {
-        printf("%d ", prime_arr[i]);
+    for (int k = 4; k < SIZE; k += 2) {
+        for (int i = 0; i < SIZE; i++) {
+            if (prime_arr[i] != 0) {
+                for (int j = 0; j < SIZE; j++) {
+                    if (prime_arr[j] + prime_arr[i] == k)
+                        printf("%d = %d + %d\n", k, i, j);
+                }
+            }
+        }
     }
 }
 
