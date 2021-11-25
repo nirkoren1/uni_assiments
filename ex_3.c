@@ -28,7 +28,16 @@ void prime(){
 
 
 void gold(){
-
+    int prime_arr[SIZE];
+    for (int j = 0; j < SIZE; j++) {
+        for (int i = 2; i < SIZE; i++) {
+            if (is_prime(i))
+                prime_arr[i] = i;
+        }
+    }
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", prime_arr[i]);
+    }
 }
 
 
@@ -52,10 +61,10 @@ int main(){
 //    scanf("%d", &key);
 //    switch (key) {
 //        case 1:
-            prime();
+//            prime();
 //            break;
 //        case 2:
-//            gold();
+            gold();
 //            break;
 //        case 3:
 //            lycherl();
