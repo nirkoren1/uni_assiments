@@ -49,6 +49,20 @@ void gold(){
 }
 
 
+int inverse_num(int num){
+    int output = 0;
+    while (1){
+
+    }
+
+}
+
+
+int is_poly(int num){
+
+}
+
+
 void lycherl(){
 
 }
@@ -72,10 +86,10 @@ int main(){
 //            prime();
 //            break;
 //        case 2:
-            gold();
+//            gold();
 //            break;
 //        case 3:
-//            lycherl();
+            lycherl();
 //            break;
 //        case 4:
 //            longest;
