@@ -84,53 +84,62 @@ void lycherl(){
 }
 
 
+//int get_longest_ser(int lst[], int i, int pre_big){
+//    int bigger_than = 0;
+//    if (i == 0)
+//        return 0;
+//    for (int j = i; j >= 0; j--) {
+//        if (lst[i] > lst[j])
+//            bigger_than += 1;
+//    }
+//    if (bigger_than < pre_big)
+//        return 1 + get_longest_ser(lst, i - 1, bigger_than);
+//    return get_longest_ser(lst, i - 1, bigger_than);
+//}
+
+
 int get_longest_ser(int lst[], int i, int pre_big){
-    int bigger_than = 0;
-    if (i == 0)
-        return 0;
-    for (int j = i; j >= 0; j--) {
-        if (lst[i] > lst[j])
-            bigger_than += 1;
-    }
-    if (bigger_than < pre_big)
-        return 1 + get_longest_ser(lst, i - 1, bigger_than);
-    return get_longest_ser(lst, i - 1, bigger_than);
+
 }
 
 
 void longest(){
-    int lst_len, max, lst[SIZE];
+    int lst_len, max = 0, lst[SIZE], tmp;
     printf("Enter the number of elements\n");
     scanf("%d", &lst_len);
     for (int i = 0; i < lst_len; i++) {
         scanf("%d", &lst[i]);
     }
-    max = get_longest_ser(lst, lst_len - 1, lst_len);
+//    max = get_longest_ser(lst, lst_len - 1, lst_len);
+    for (int i = 0; i < lst_len; i++) {
+        tmp = get_longest_ser(lst, i);
+        max = max > tmp ? max : tmp;
+    }
     printf("%d", max);
 }
 
 
 int main(){
-    int key;
-    printf("1: primes\n"
-           "2: goldbach\n"
-           "3: lychrel\n"
-           "4: max set\n");
-    scanf("%d", &key);
-    switch (key) {
-        case 1:
-            prime();
-            break;
-        case 2:
-            gold();
-            break;
-        case 3:
-            lycherl();
-            break;
-        case 4:
+//    int key;
+//    printf("1: primes\n"
+//           "2: goldbach\n"
+//           "3: lychrel\n"
+//           "4: max set\n");
+//    scanf("%d", &key);
+//    switch (key) {
+//        case 1:
+//            prime();
+//            break;
+//        case 2:
+//            gold();
+//            break;
+//        case 3:
+//            lycherl();
+//            break;
+//        case 4:
             longest();
-            break;
-        default:
-            printf("Wrong option!");
-    }
+//            break;
+//        default:
+//            printf("Wrong option!");
+//    }
 }
