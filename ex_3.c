@@ -99,19 +99,31 @@ void lycherl(){
 //}
 
 
-int get_longest_ser(int lst[], int start, int i, int lst_len){
-    int bigger_than = 0, tmp = lst[i], new_lst[lst_len];
-    if (start == lst_len)
-        return 1;
-    for (int j = i + 1; j < lst_len; j++) {
-        if (lst[j] > tmp){
-            tmp = lst[j];
-            bigger_than += 1;
+int count(int arr[], int start, int finish){
+    int tmp = arr[start], c = 0;
+    for (int i = start + 1; i < finish; i++) {
+        if (arr[i] > tmp){
+            tmp = arr[i];
+            c++;
         }
     }
+    return c;
+}
+
+
+int get_longest_ser(int lst[], int start, int i, int lst_len){
+    int bigger_than = 0, tmp = lst[start], new_lst[SIZE];
+    if (start == lst_len)
+        return 2;
+    bigger_than = count(lst, start, lst_len);
     for (int j = 0; j < lst_len; j++) {
-        new_lst[]
+        if (j == i)
+            new_lst[j] = -10;
+        else
+            new_lst[j] = new_lst[i];
     }
+    printf("%d", bigger_than);
+    return get_longest_ser(lst, start, i + 1, lst_len) > get_longest_ser(new_lst, start, i + 1, lst_len);
 }
 
 
@@ -124,7 +136,7 @@ void longest(){
     }
 //    max = get_longest_ser(lst, lst_len - 1, lst_len);
     for (int i = 0; i < lst_len; i++) {
-        tmp = get_longest_ser(lst, i, lst_len);
+        tmp = get_longest_ser(lst, i,i + 1, lst_len);
         max = max > tmp ? max : tmp;
     }
     printf("%d", max);
@@ -149,8 +161,8 @@ int main(){
 //            lycherl();
 //            break;
 //        case 4:
-//            longest();
-    printf("%d", NULL);
+            longest();
+//    printf("%d", NULL);
 //            break;
 //        default:
 //            printf("Wrong option!");
