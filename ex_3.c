@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#define SIZE 100
+#define SIZE 15
 #define LIMIT 30
 
 
@@ -38,10 +38,10 @@ void gold(){
                 prime_arr[i] = i;
         }
     }
-    for (int k = 4; k < SIZE; k += 2) {
-        for (int i = 0; i < SIZE; i++) {
-            if (prime_arr[i] != 0) {
-                for (int j = 0; j < SIZE; j++) {
+    for (int k = 4; k < SIZE * 2; k += 2) {
+        for (int i = 0; i <= k / 2; i++) {
+            if (prime_arr[i] != 0 && prime_arr[i] <= SIZE) {
+                for (int j = 0; j <= SIZE; j++) {
                     if (prime_arr[j] + prime_arr[i] == k)
                         printf("%d = %d + %d\n", k, i, j);
                 }
@@ -112,7 +112,7 @@ void longest(){
     }
 //    max = get_longest_ser(lst, lst_len - 1, lst_len);
     for (int i = 0; i < lst_len; i++) {
-        tmp = get_longest_ser(lst, i);
+        tmp = get_longest_ser(lst, i, i);
         max = max > tmp ? max : tmp;
     }
     printf("%d", max);
@@ -120,26 +120,26 @@ void longest(){
 
 
 int main(){
-//    int key;
-//    printf("1: primes\n"
-//           "2: goldbach\n"
-//           "3: lychrel\n"
-//           "4: max set\n");
-//    scanf("%d", &key);
-//    switch (key) {
-//        case 1:
-//            prime();
-//            break;
-//        case 2:
-//            gold();
-//            break;
-//        case 3:
-//            lycherl();
-//            break;
-//        case 4:
+    int key;
+    printf("1: primes\n"
+           "2: goldbach\n"
+           "3: lychrel\n"
+           "4: max set\n");
+    scanf("%d", &key);
+    switch (key) {
+        case 1:
+            prime();
+            break;
+        case 2:
+            gold();
+            break;
+        case 3:
+            lycherl();
+            break;
+        case 4:
             longest();
-//            break;
-//        default:
-//            printf("Wrong option!");
-//    }
+            break;
+        default:
+            printf("Wrong option!");
+    }
 }
