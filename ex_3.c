@@ -22,9 +22,10 @@ int is_prime(int num){
 
 
 void prime(){
-    for (int i = 2; i < SIZE; i++) {
+    printf("2");
+    for (int i = 3; i < SIZE; i++) {
         if (is_prime(i))
-            printf("%d ", i);
+            printf("% d", i);
     }
     printf("\n");
 }
@@ -98,8 +99,19 @@ void lycherl(){
 //}
 
 
-int get_longest_ser(int lst[], int i, int pre_big){
-
+int get_longest_ser(int lst[], int start, int i, int lst_len){
+    int bigger_than = 0, tmp = lst[i], new_lst[lst_len];
+    if (start == lst_len)
+        return 1;
+    for (int j = i + 1; j < lst_len; j++) {
+        if (lst[j] > tmp){
+            tmp = lst[j];
+            bigger_than += 1;
+        }
+    }
+    for (int j = 0; j < lst_len; j++) {
+        new_lst[]
+    }
 }
 
 
@@ -112,7 +124,7 @@ void longest(){
     }
 //    max = get_longest_ser(lst, lst_len - 1, lst_len);
     for (int i = 0; i < lst_len; i++) {
-        tmp = get_longest_ser(lst, i, i);
+        tmp = get_longest_ser(lst, i, lst_len);
         max = max > tmp ? max : tmp;
     }
     printf("%d", max);
@@ -120,26 +132,27 @@ void longest(){
 
 
 int main(){
-    int key;
-    printf("1: primes\n"
-           "2: goldbach\n"
-           "3: lychrel\n"
-           "4: max set\n");
-    scanf("%d", &key);
-    switch (key) {
-        case 1:
-            prime();
-            break;
-        case 2:
-            gold();
-            break;
-        case 3:
-            lycherl();
-            break;
-        case 4:
-            longest();
-            break;
-        default:
-            printf("Wrong option!");
-    }
+//    int key;
+//    printf("1: primes\n"
+//           "2: goldbach\n"
+//           "3: lychrel\n"
+//           "4: max set\n");
+//    scanf("%d", &key);
+//    switch (key) {
+//        case 1:
+//            prime();
+//            break;
+//        case 2:
+//            gold();
+//            break;
+//        case 3:
+//            lycherl();
+//            break;
+//        case 4:
+//            longest();
+    printf("%d", NULL);
+//            break;
+//        default:
+//            printf("Wrong option!");
+//    }
 }
