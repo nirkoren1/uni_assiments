@@ -29,13 +29,37 @@ char **string_to_tokens_lst(char str[], char delim[], int *size){
     return out;
 }
 
+
+void swap(char** ptr1, char** ptr2)
+{
+    char * temp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+}
+
+
+void lexicografic_sort(char **tokens, int size){
+    int i = 1;
+    while (i){
+        i = 0;
+        for (int j = 0; j < size - 1; j++) {
+            if (strcmp(tokens[j], tokens[j + 1]) > 0){
+                swap(&tokens[j], &tokens[j + 1]);
+                i = 1;
+            }
+        }
+    }
+}
+
+
 char *init(){
     char words[WORDSSIZE * SIZEPERWORD] = {"\0"}, **token_ptr;
     int size = 0;
     printf("Enter your words:\n");
     fgets(words, WORDSSIZE * SIZEPERWORD, stdin);
+    words[strlen(words) - 1] = '\0';
     token_ptr = string_to_tokens_lst(words, ":,", &size);
-    lexicografic_sort(token_ptr);
+    lexicografic_sort(token_ptr, size);
     for (int j = 0; j < size; j++) {
         printf("%s\n", token_ptr[j]);
     }
