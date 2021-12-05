@@ -54,19 +54,26 @@ void lexicografic_sort(char **tokens, int size){
 
 char *init(){
     char words[WORDSSIZE * SIZEPERWORD] = {"\0"}, **token_ptr;
-    int size = 0;
+    int size = 0, chosen;
     printf("Enter your words:\n");
     fgets(words, WORDSSIZE * SIZEPERWORD, stdin);
     words[strlen(words) - 1] = '\0';
     token_ptr = string_to_tokens_lst(words, ":,", &size);
     lexicografic_sort(token_ptr, size);
+    printf("choose an option:\n");
     for (int j = 0; j < size; j++) {
-        printf("%s\n", token_ptr[j]);
+        printf("%d: %s\n",j + 1, token_ptr[j]);
     }
+    scanf("%d", &chosen);
+    // free all and inside but chosen
+
+    return token_ptr[chosen - 1];
 }
 
 
 int main(){
-    init();
+    char *token_ptr;
+    token_ptr = init();
+    printf("%s", token_ptr);
 //    hang_man();
 }
