@@ -68,9 +68,14 @@ char **init(){
 }
 
 
-int is_over(char *str1, char *str2){
+int is_over(const char *str1, const char *str2){
     int i = 0, j = 0, match = 0, sum_match = 0;
     while (str1[i] != '\0'){
+        if (str1[i] == ' '){
+            i++;
+            sum_match++;
+            continue;
+        }
         while (str2[j] != '\0'){
             if (str1[i] == str2[j]){
                 match = 1;
@@ -142,19 +147,14 @@ void print_man(int bad_score){
 }
 
 
-void print_word(char *the_word){
-
-}
-
-
 void print_used_chars(char *chars, int size){
-    int i = size;
+    int i = 0;
     while (chars[i] != '\0'){
         if (i == size)
             printf(" %c", chars[i]);
         else
             printf(", %c", chars[i]);
-        i--;
+        i++;
     }
     printf("\n");
 }
@@ -170,23 +170,41 @@ void empty_buffer(){
 }
 
 
-int char_in_chars(char current_char, char *chars, int size){
-    int i = size, out = 0;
+int is_char_in_chars(char current_char, const char *chars){
+    int i = 0, out = 0;
     while (chars[i] != '\0'){
-        if (chars[i] == current_char)
+        if (chars[i] == current_char) {
             out = 1;
+            break;
+        }
+        i++;
     }
     return out;
 }
 
 
+void print_word(char *the_word, char *guessedChars){
+    int i = 0;
+    while (the_word[i] != '\0'){
+        if (the_word[i] == ' ') {
+            printf(" ");
+        }else if (is_char_in_chars(the_word[i], guessedChars)) {
+            printf("%c", the_word[i]);
+        }else {
+            printf("_");
+        }
+        i++;
+    }
+    printf("\n");
+}
+
+
 void hang_man(char *clue, char *the_word){
-    int bad_score = 0, clue_used = 0, size = 0;
+    int bad_score = 0, clue_used = 0, size = 1;
     char *guessedChars = (char *) malloc(sizeof(char)), current_char;
-    guessedChars[0] = '\0';
-    while (is_over(the_word, guessedChars)){
+    while (!is_over(the_word, guessedChars) && bad_score < 5){
         print_man(bad_score);
-        print_word(the_word);
+        print_word(the_word, guessedChars);
         if (!clue_used)
             printf("do you want a clue? press -> *\n");
         printf("The letters that you already tried:");
@@ -194,17 +212,32 @@ void hang_man(char *clue, char *the_word){
         printf("please choose a letter:\n");
         scanf("%c", &current_char);
         empty_buffer();
-        if (char_in_chars(current_char, guessedChars, size)){
+        if (current_char == '*' && !clue_used){
+            printf("the clue is: %s.", clue);
+            clue_used = 1;
+            continue;
+        } else if (current_char == '*'){
+            continue;
+        } else if (is_char_in_chars(current_char, guessedChars)){
             printf("You've already tried that letter.\n");
             continue;
-        } else{
+        } else {
             size++;
-            guessedChars = (char *) realloc(guessedChars, (size + 1) * sizeof(char));
-            strcat(guessedChars, &current_char);
+            guessedChars = (char *) realloc(guessedChars, (size) * sizeof(char));
+            guessedChars[size - 2] = current_char;
+            guessedChars[size - 1] = '\0';
         }
-
+        if (is_char_in_chars(current_char, the_word))
+            bad_score++;
+    }
+    if (bad_score == 5){
+        print_man(bad_score);
+        printf("The word is %s, GAME OVER!", the_word);
+    } else {
+        printf("The word is %s, good job!", the_word);
     }
 }
+
 
 
 int main(){
@@ -214,6 +247,6 @@ int main(){
     scanf("%d", &chosen);
     clue = token_ptr[0];
     the_word = token_ptr[chosen];
-    printf("%s", clue);
     hang_man(clue, the_word);
+
 }
