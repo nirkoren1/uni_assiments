@@ -142,14 +142,19 @@ void print_man(int bad_score){
 }
 
 
-void print_used_chars(char *chars){
-    int i = 0;
+void print_word(char *the_word){
+
+}
+
+
+void print_used_chars(char *chars, int size){
+    int i = size;
     while (chars[i] != '\0'){
-        if (i == 0)
+        if (i == size)
             printf(" %c", chars[i]);
         else
             printf(", %c", chars[i]);
-        i++;
+        i--;
     }
     printf("\n");
 }
@@ -165,19 +170,39 @@ void empty_buffer(){
 }
 
 
+int char_in_chars(char current_char, char *chars, int size){
+    int i = size, out = 0;
+    while (chars[i] != '\0'){
+        if (chars[i] == current_char)
+            out = 1;
+    }
+    return out;
+}
+
+
 void hang_man(char *clue, char *the_word){
-    int bad_score = 0, clue_used = 0;
+    int bad_score = 0, clue_used = 0, size = 0;
     char *guessedChars = (char *) malloc(sizeof(char)), current_char;
     guessedChars[0] = '\0';
     while (is_over(the_word, guessedChars)){
         print_man(bad_score);
+        print_word(the_word);
         if (!clue_used)
             printf("do you want a clue? press -> *\n");
         printf("The letters that you already tried:");
-        print_used_chars(guessedChars);
+        print_used_chars(guessedChars, size);
         printf("please choose a letter:\n");
         scanf("%c", &current_char);
         empty_buffer();
+        if (char_in_chars(current_char, guessedChars, size)){
+            printf("You've already tried that letter.\n");
+            continue;
+        } else{
+            size++;
+            guessedChars = (char *) realloc(guessedChars, (size + 1) * sizeof(char));
+            strcat(guessedChars, &current_char);
+        }
+
     }
 }
 
