@@ -9,8 +9,8 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-#define WORDSSIZE 15
-#define SIZEPERWORD 20
+#define WORDSSIZE 16
+#define SIZEPERWORD 21
 
 
 /******************
