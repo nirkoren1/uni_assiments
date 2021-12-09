@@ -13,6 +13,12 @@
 #define SIZEPERWORD 20
 
 
+/******************
+* Function Name: string_to_tokens_lst
+* Input: str, deliminator, size of the lst to update
+* Output: ptr to the tokens lst
+* Function Operation: cuts the str to tokens using the strtok func shown in class
+******************/
 char **string_to_tokens_lst(char str[], char delim[], int *size){
     int i = -1;
     char *token = strtok(str, delim);
@@ -29,6 +35,12 @@ char **string_to_tokens_lst(char str[], char delim[], int *size){
 }
 
 
+/******************
+* Function Name: swap
+* Input: **ptr1, **ptr2
+* Output: none
+* Function Operation: swap the val of the pointers (addresses of the words)
+******************/
 void swap(char** ptr1, char** ptr2)
 {
     char * temp = *ptr1;
@@ -37,11 +49,17 @@ void swap(char** ptr1, char** ptr2)
 }
 
 
-void lexicografic_sort(char **tokens, int size){
+/******************
+* Function Name: lexicogragic_sort
+* Input: words list, size of the list
+* Output: none
+* Function Operation: using strcmp and swap func to sort the list in lexicografic order
+******************/
+void lexicografic_sort(char **tokens, int *size){
     int i = 1;
     while (i){
         i = 0;
-        for (int j = 1; j < size - 1; j++) {
+        for (int j = 1; j < *size - 1; j++) {
             if (strcmp(tokens[j], tokens[j + 1]) > 0){
                 swap(&tokens[j], &tokens[j + 1]);
                 i = 1;
@@ -51,15 +69,21 @@ void lexicografic_sort(char **tokens, int size){
 }
 
 
-char **init(int size){
+/******************
+* Function Name: init
+* Input: size (of the malloc ptr for free later)
+* Output: pointer to char list
+* Function Operation: takes a clue and words, sorting them in lexicografic order and return the words
+******************/
+char **init(int *size){
     char words[WORDSSIZE * SIZEPERWORD] = {"\0"}, **token_ptr;
     printf("Enter your words:\n");
     fgets(words, WORDSSIZE * SIZEPERWORD, stdin);
     words[strlen(words) - 1] = '\0';
-    token_ptr = string_to_tokens_lst(words, ":,", &size);
+    token_ptr = string_to_tokens_lst(words, ":,", size);
     lexicografic_sort(token_ptr, size);
     printf("choose an option:\n");
-    for (int j = 1; j < size; j++) {
+    for (int j = 1; j < *size; j++) {
         printf("%d: %s\n",j, token_ptr[j]);
     }
 
@@ -67,6 +91,12 @@ char **init(int size){
 }
 
 
+/******************
+* Function Name: empty_buffer
+* Input: none
+* Output: none
+* Function Operation: cleans the buffer with scanf for error measures
+******************/
 int is_over(const char *str1, const char *str2){
     int i = 0, j = 0, match = 0, sum_match = 0;
     while (str1[i] != '\0'){
@@ -94,6 +124,12 @@ int is_over(const char *str1, const char *str2){
 }
 
 
+/******************
+* Function Name: print_man
+* Input: bad score
+* Output: prints the hanged man
+* Function Operation: prints the hanged man according to the bad score
+******************/
 void print_man(int bad_score){
     if (bad_score == 0)
         printf(" _________________\n"
@@ -146,6 +182,12 @@ void print_man(int bad_score){
 }
 
 
+/******************
+* Function Name: print_used_chars
+* Input: guessed chars
+* Output: prints the guessed words
+* Function Operation: prints the guessed words by order: *, *, *, *
+******************/
 void print_used_chars(char *chars){
     int i = 0;
     while (chars[i] != '\0'){
@@ -159,6 +201,12 @@ void print_used_chars(char *chars){
 }
 
 
+/******************
+* Function Name: empty_buffer
+* Input: none
+* Output: none
+* Function Operation: cleans the buffer with scanf for error measures
+******************/
 void empty_buffer(){
     char c;
     while (1){
@@ -169,6 +217,12 @@ void empty_buffer(){
 }
 
 
+/******************
+* Function Name: is_char_in_chars
+* Input: char, char list
+* Output: int (bool) 1 if char in chars else 0
+* Function Operation: iterating the chars and chek if char equal
+******************/
 int is_char_in_chars(char current_char, const char *chars){
     int i = 0, out = 0;
     while (chars[i] != '\0'){
@@ -182,6 +236,12 @@ int is_char_in_chars(char current_char, const char *chars){
 }
 
 
+/******************
+* Function Name: print_word
+* Input: the word, guessed chars
+* Output: prints the target word
+* Function Operation: prints the word in format:   _**___   if * in guessed chars
+******************/
 void print_word(char *the_word, char *guessedChars){
     int i = 0;
     while (the_word[i] != '\0'){
@@ -198,6 +258,12 @@ void print_word(char *the_word, char *guessedChars){
 }
 
 
+/******************
+* Function Name: hang_man
+* Input: clue, the word
+* Output: none
+* Function Operation: contains the logic of the hang man game
+******************/
 void hang_man(char *clue, char *the_word){
     int bad_score = 0, clue_used = 0, size = 1;
     char *guessedChars = (char *) calloc(1, sizeof(char)), current_char;
@@ -229,8 +295,8 @@ void hang_man(char *clue, char *the_word){
         if (!is_char_in_chars(current_char, the_word))
             bad_score++;
     }
+    print_man(bad_score);
     if (bad_score == 5){
-        print_man(bad_score);
         printf("The word is %s, GAME OVER!", the_word);
     } else {
         printf("The word is %s, good job!", the_word);
@@ -243,12 +309,13 @@ void hang_man(char *clue, char *the_word){
 int main(){
     char **token_ptr, *clue, *the_word;
     int chosen, size = 0;
-    token_ptr = init(size);
+    token_ptr = init(&size);
     scanf("%d", &chosen);
     empty_buffer();
     clue = token_ptr[0];
     the_word = token_ptr[chosen];
     hang_man(clue, the_word);
+    // free all heap
     for (int i = 0; i < size; i++) {
         free(token_ptr[i]);
     }
