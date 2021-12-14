@@ -80,6 +80,7 @@ void create_dic(Dictionary dictionaries){
     dictionaries.languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
     dictionaries.numOfLanguages = numOfLanguages;
     printf("The dictionary has been created successfully!\n");
+    free(languages);
 }
 
 
@@ -101,17 +102,17 @@ int main(){
         dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * numOfDictionaries);
         create_dic(dictionaries[numOfDictionaries - 1]);
     }
-    else if (decision == 2)
-        add_word();
-    else if (decision == 3)
-        del_word();
-    else if (decision == 4)
-        find_word();
-    else if (decision == 5)
-        del_dic();
-    else if (decision == 6)
-        return 0;
-    else
-        printf("Wrong option, try again:");
+//    else if (decision == 2)
+//        add_word();
+//    else if (decision == 3)
+//        del_word();
+//    else if (decision == 4)
+//        find_word();
+//    else if (decision == 5)
+//        del_dic();
+//    else if (decision == 6)
+//        return 0;
+//    else
+//        printf("Wrong option, try again:");
     return 0;
 }
