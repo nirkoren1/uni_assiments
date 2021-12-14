@@ -62,7 +62,7 @@ char **string_to_tokens_lst(char str[], char delim[], int *size) {
 
 
 
-void create_dic(Dictionary dictionaries){
+void create_dic(Dictionary *dictionary){
     char languages_c;
     int i = 1, numOfLanguages = 0;
     char *languages = (char *) malloc(sizeof(char) * i);
@@ -77,8 +77,8 @@ void create_dic(Dictionary dictionaries){
         languages[i - 2] = languages_c;
     }
     languages[i - 1] = '\0';
-    dictionaries.languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
-    dictionaries.numOfLanguages = numOfLanguages;
+    dictionary->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
+    dictionary->numOfLanguages = numOfLanguages;
     printf("The dictionary has been created successfully!\n");
     free(languages);
 }
@@ -100,7 +100,7 @@ int main(){
     if (decision == 1){
         numOfDictionaries++;
         dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * numOfDictionaries);
-        create_dic(dictionaries[numOfDictionaries - 1]);
+        create_dic(&dictionaries[numOfDictionaries - 1]);
     }
 //    else if (decision == 2)
 //        add_word();
