@@ -61,21 +61,29 @@ char **string_to_tokens_lst(char str[], char delim[], int *size) {
 }
 
 
-void create_dic(Dictionary *dictionary){
-    char languages_c;
-    int i = 1, numOfLanguages = 0;
-    char *languages = (char *) malloc(sizeof(char) * i);
+char *scan_no_limit(){
+    char c;
+    int i = 1;
+    char *str = (char *) malloc(sizeof(char) * i);
     empty_buffer();
-    printf("Define a new dictionary:\n");
     while (1){
-        scanf("%c", &languages_c);
-        if (languages_c == '\n')
+        scanf("%c", &c);
+        if (c == '\n')
             break;
         i++;
-        languages = (char *) realloc(languages, (sizeof(char) * i));
-        languages[i - 2] = languages_c;
+        str = (char *) realloc(str, (sizeof(char) * i));
+        str[i - 2] = c;
     }
-    languages[i - 1] = '\0';
+    str[i - 1] = '\0';
+    return str;
+}
+
+
+void create_dic(Dictionary *dictionary){
+    int numOfLanguages = 0;
+    char *languages;
+    printf("Define a new dictionary:\n");
+    languages = scan_no_limit();
     dictionary->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
     dictionary->numOfLanguages = numOfLanguages;
     printf("The dictionary has been created successfully!\n");
@@ -88,16 +96,27 @@ void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
         printf("%d. ", i + 1);
         for (int j = 0; j < dictionaries[i].numOfLanguages; j++) {
             printf("%s", dictionaries[i].languages[j]);
-            if (j != dictionaries[i].numOfLanguages -1)
+            if (j != dictionaries[i].numOfLanguages - 1)
                 printf(",");
         }
+        printf("\n");
     }
 }
 
 
 void add_word(int numOfDictionaries, Dictionary *dictionaries){
+    int decision;
     printf("Choose a dictionary:\n");
-    print_all_dic(numOfDictionaries);
+    print_all_dic(numOfDictionaries, dictionaries);
+    scanf("%d", &decision);
+    printf("Enter a word in ");
+    for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
+        printf("%s", dictionaries[decision].languages[i]);
+        if (i != dictionaries[i].numOfLanguages - 1)
+            printf(",");
+    }
+    printf(":\n");
+
 }
 
 
@@ -105,31 +124,33 @@ int main(){
     Dictionary *dictionaries;
     int numOfDictionaries = 0, decision;
     dictionaries = (Dictionary *) malloc(sizeof(Dictionary));
-    printf("Welcome to the dictionaries manager!\n"
-           "Choose an option:\n"
-           "1. Create a new dictionary.\n"
-           "2. Add a word to a dictionary.\n"
-           "3. Delete a word from a dictionary.\n"
-           "4. Find a word in a dictionary.\n"
-           "5. Delete a dictionary.\n"
-           "6. Exit.\n");
-    scanf("%d", &decision);
-    if (decision == 1){
-        numOfDictionaries++;
-        dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * numOfDictionaries);
-        create_dic(&dictionaries[numOfDictionaries - 1]);
-    }
-    else if (decision == 2)
-        add_word(numOfDictionaries, dictionaries);
+    while (1) {
+        printf("Welcome to the dictionaries manager!\n"
+               "Choose an option:\n"
+               "1. Create a new dictionary.\n"
+               "2. Add a word to a dictionary.\n"
+               "3. Delete a word from a dictionary.\n"
+               "4. Find a word in a dictionary.\n"
+               "5. Delete a dictionary.\n"
+               "6. Exit.\n");
+        scanf("%d", &decision);
+        if (decision == 1) {
+            numOfDictionaries++;
+            dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * numOfDictionaries);
+            create_dic(&dictionaries[numOfDictionaries - 1]);
+        } else if (decision == 2) {
+            add_word(numOfDictionaries, dictionaries);
+        }
 //    else if (decision == 3)
 //        del_word();
 //    else if (decision == 4)
 //        find_word();
 //    else if (decision == 5)
 //        del_dic();
-//    else if (decision == 6)
-//        return 0;
-//    else
-//        printf("Wrong option, try again:");
-    return 0;
+        else if (decision == 6) {
+            return 0;
+        }
+        else
+            printf("Wrong option, try again:");
+    }
 }
