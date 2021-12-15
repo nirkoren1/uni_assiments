@@ -84,8 +84,13 @@ void create_dic(Dictionary *dictionary){
 
 
 void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
-    for (int i = 0; i < numOfDictionaries; ++i) {
-        printf("%d. %s", i + 1, dictionaries[i].languages)
+    for (int i = 0; i < numOfDictionaries; i++) {
+        printf("%d. ", i + 1);
+        for (int j = 0; j < dictionaries[i].numOfLanguages; j++) {
+            printf("%s", dictionaries[i].languages[j]);
+            if (j != dictionaries[i].numOfLanguages -1)
+                printf(",");
+        }
     }
 }
 
