@@ -180,10 +180,19 @@ void add_word(int numOfDictionaries, Dictionary *dictionaries){
 }
 
 
-Word *search_word(Word *head){
+Word *search_word(Word *head, char const word[]){
     Word *iterator = head;
-    while (iterator->next != NULL or)
+    while (iterator->next != NULL){
         iterator = iterator->next;
+        if (iterator->translations[0] == word)
+            return iterator;
+    }
+    return NULL;
+}
+
+
+void del_word(Word *word){
+
 }
 
 
