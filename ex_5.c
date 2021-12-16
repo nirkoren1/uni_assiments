@@ -86,7 +86,7 @@ char *scan_no_limit(){
     int i = 1;
     char *str = (char *) malloc(sizeof(char) * i);
     if (str == NULL)
-        printf("The creation of the scan has failed!\n");
+        printf("The scan has failed!\n");
     empty_buffer();
     while (1){
         scanf("%c", &c);
@@ -95,7 +95,7 @@ char *scan_no_limit(){
         i++;
         str = (char *) realloc(str, (sizeof(char) * i));
         if (str == NULL)
-            printf("The creation of the scan has failed!\n");
+            printf("The scan has failed!\n");
         str[i - 2] = c;
     }
     str[i - 1] = '\0';
