@@ -127,8 +127,8 @@ void create_dic(Dictionary *dictionary){
     languages = scan_no_limit();
     dictionary->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
     dictionary->numOfLanguages = numOfLanguages;
-    dictionary->wordList = (Word *) malloc(sizeof(Word));
-    dictionary->wordList->next = NULL;
+//    dictionary->wordList = (Word *) malloc(sizeof(Word));
+    dictionary->wordList = NULL;
     printf("The dictionary has been created successfully!\n");
     free(languages);
 }
@@ -149,6 +149,7 @@ void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
 
 void create_new_word(Word *head){
     char *words;
+
     Word *iterator = head;
     while (iterator->next != NULL)
         iterator = iterator->next;
@@ -191,7 +192,9 @@ Word *search_word(Word *head, char const word[]){
 }
 
 
-void del_word(Word *word){
+void del_word(Word *head, char const word[]){
+    Word *word_to_del;
+    word_to_del = search_word(head, word);
 
 }
 
