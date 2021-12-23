@@ -155,13 +155,17 @@ void create_new_word(Word *head){
         iterator = iterator->next;
     }
     words = scan_no_limit();
-    iterator->next = (Word *) malloc(sizeof(Word));
-    if (iterator->next == NULL) {
-        printf("The addition of the word has failed!\n");
-        return;
+    if (iterator == head){
+        iterator->translations = string_to_tokens_lst(words, ",", NULL);
+    } else{
+        iterator->next = (Word *) malloc(sizeof(Word));
+        if (iterator->next == NULL) {
+            printf("The addition of the word has failed!\n");
+            return;
+        }
+        iterator->next->translations = string_to_tokens_lst(words, ",", NULL);
+        iterator->next->next = NULL;
     }
-    iterator->translations = string_to_tokens_lst(words, ",", NULL);
-    iterator->next->next = NULL;
     free(words);
     printf("The word has been added successfully!\n");
 }
@@ -186,12 +190,12 @@ void add_word(int numOfDictionaries, Dictionary *dictionaries){
 Word *search_word(Word *head, char const word[], int return_prev){
     Word *iterator = head, *prev = head;
     while (iterator != NULL){
-        prev = iterator;
         if (strcmp(iterator->translations[0], word) == 0) {
             if (!return_prev)
                 return iterator;
             return prev;
         }
+        prev = iterator;
         iterator = iterator->next;
     }
     return NULL;
@@ -210,25 +214,45 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
     printf("Enter a word in %s:\n", dictionaries[decision].languages[0]);
     word = scan_no_limit();
     prev_word = search_word(head, word, 1);
-    word_to_del = prev_word->next;
-    next_word = word_to_del->next;
     free(word);
-    if (word_to_del == NULL){
+    if (prev_word == NULL){
         printf("The deletion of the word has failed!\n");
         return;
     }
+    word_to_del = prev_word->next;
+    if (word_to_del == NULL)
+        next_word = NULL;
+    else
+        next_word = word_to_del->next;
     printf("Are you sure? (y/n)\n");
     scanf("%c", &delete_decision);
-    if (delete_decision == 'y'){
+    if (delete_decision != 'y') {
+        printf("The deletion of the word has been canceled.\n");
+        return;
+    }
+    if (word_to_del == NULL){
+        printf("a");
+        for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
+            printf("freeing %s ", prev_word->translations[i]);
+            free(prev_word->translations[i]);
+        }
+        free(prev_word->translations);
+    } else if (next_word == NULL){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
             free(word_to_del->translations[i]);
         }
-        prev_word->next = word_to_del->next;
+        free(word_to_del->translations);
         free(word_to_del);
-        printf("The word has been deleted successfully!\n");
-        return;
+        prev_word->next = NULL;
+    } else {
+        for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
+            free(word_to_del->translations[i]);
+        }
+        free(word_to_del->translations);
+        prev_word->next = next_word;
+        free(word_to_del);
     }
-    printf("The deletion of the word has been canceled.\n");
+    printf("The word has been deleted successfully!\n");
 }
 
 
@@ -247,6 +271,12 @@ void find_word(int numOfDictionaries, Dictionary *dictionaries){
         return;
     }
     word_to_search = search_word(head, word, 0);
+    // need to check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    if (word_to_search == NULL){
+        printf("There are no translations for “%s” in this dictionary.\n", word);
+        free(word);
+        return;
+    }
     free(word);
     printf("The translations are:\n");
     for (int i = 1; i < dictionaries[decision].numOfLanguages; i++) {
