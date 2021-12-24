@@ -128,6 +128,7 @@ void create_dic(Dictionary *dictionary){
     dictionary->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
     dictionary->numOfLanguages = numOfLanguages;
     dictionary->wordList = (Word *) malloc(sizeof(Word));
+    dictionary->wordList->translations = NULL;
     dictionary->wordList->next = NULL;
     printf("The dictionary has been created successfully!\n");
     free(languages);
@@ -190,6 +191,8 @@ void add_word(int numOfDictionaries, Dictionary *dictionaries){
 Word *search_word(Word *head, char const word[], int return_prev){
     Word *iterator = head, *prev = head;
     while (iterator != NULL){
+        if (iterator->translations == NULL)
+            return NULL;
         if (strcmp(iterator->translations[0], word) == 0) {
             if (!return_prev)
                 return iterator;
@@ -231,12 +234,11 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
         return;
     }
     if (word_to_del == NULL){
-        printf("a");
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
-            printf("freeing %s ", prev_word->translations[i]);
             free(prev_word->translations[i]);
         }
         free(prev_word->translations);
+        prev_word->translations = NULL;
     } else if (next_word == NULL){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
             free(word_to_del->translations[i]);
@@ -273,7 +275,7 @@ void find_word(int numOfDictionaries, Dictionary *dictionaries){
     word_to_search = search_word(head, word, 0);
     // need to check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (word_to_search == NULL){
-        printf("There are no translations for “%s” in this dictionary.\n", word);
+        printf("There are no translations for \"%s\" in this dictionary.\n", word);
         free(word);
         return;
     }
@@ -285,6 +287,54 @@ void find_word(int numOfDictionaries, Dictionary *dictionaries){
             printf(", ");
     }
     printf("\n");
+}
+
+
+void destroy_linked_lst(Word *head, int numOfLang){
+    if (head == NULL)
+        return;
+    destroy_linked_lst(head->next, numOfLang);
+    for (int i = 0; i < numOfLang; i++) {
+        free(head->translations[i]);
+    }
+    free(head);
+}
+
+
+void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
+    int decision;
+    char del_decision;
+    Dictionary *new_dictionaries_lst;
+    if (*numOfDictionaries == 0){
+        printf("The deletion of the dictionary has failed!\n");
+        return;
+    }
+    print_all_dic(*numOfDictionaries, dictionaries);
+    scanf("%d", &decision);
+    if (decision > *numOfDictionaries){
+        printf("The deletion of the dictionary has failed!\n");
+        return;
+    }
+    decision--;
+    destroy_linked_lst(dictionaries[decision].wordList, dictionaries[decision].numOfLanguages);
+    free(&dictionaries[decision]);
+    printf("Are you sure? (y/n)\n");
+    scanf("%c", &del_decision);
+    if (del_decision != 'y'){
+        printf("The deletion of the dictionary has been canceled.\n");
+        return;
+    }
+    *numOfDictionaries--;
+    new_dictionaries_lst = (Dictionary *) malloc(*numOfDictionaries * sizeof(Dictionary));
+    int j = 0;
+    for (int i = 0; i < *numOfDictionaries + 1; i++) {
+        if (i == decision)
+            continue;
+        new_dictionaries_lst[j] = dictionaries[i];
+        j++;
+    }
+    free(dictionaries);
+    dictionaries = new_dictionaries_lst;
 }
 
 
@@ -301,19 +351,19 @@ int main(){
             if (dictionaries == NULL)
                 printf("The creation of the dictionary has failed!\n");
             create_dic(&dictionaries[numOfDictionaries - 1]);
-        } else if (1 < decision && decision < 6 && numOfDictionaries == 0){
+        } else if (1 < decision && decision < 6 && numOfDictionaries == 0) {
             printf("This option is not available right now, try again:\n");
         } else if (decision == 2) {
             add_word(numOfDictionaries, dictionaries);
-        } else if (decision == 3){
+        } else if (decision == 3) {
             del_word(numOfDictionaries, dictionaries);
-        } else if (decision == 4)
+        } else if (decision == 4) {
             find_word(numOfDictionaries, dictionaries);
-//    else if (decision == 5)
-//        del_dic();
-        else if (decision == 6) {
+        } else if (decision == 5) {
+            del_dic(&numOfDictionaries, dictionaries);
+        } else if (decision == 6) {
             return 0;
-        } else{
+        } else {
             printf("Wrong option, try again:");
             continue;
         }
