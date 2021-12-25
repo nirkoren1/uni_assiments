@@ -69,8 +69,10 @@ char **string_to_tokens_lst(char str[], char delim[], int *size) {
             *size += 1;
         t = out;
         out = (char **) realloc(out, sizeof(char *) * (i + 1));
-        if (out == NULL)
+        if (out == NULL){
+            printf("Error!");
             out = t;
+        }
         out[i] = (char *) malloc(sizeof(char) * strlen(token) + 1);
         if (out[i] == NULL)
             printf("The creation of the string has failed!\n");
@@ -85,8 +87,10 @@ char *scan_no_limit(){
     char c;
     int i = 1;
     char *str = (char *) malloc(sizeof(char) * i);
-    if (str == NULL)
+    if (str == NULL){
+        printf("Error!");
         return str;
+    }
     empty_buffer();
     while (1){
         scanf("%c", &c);
@@ -94,8 +98,10 @@ char *scan_no_limit(){
             break;
         i++;
         str = (char *) realloc(str, (sizeof(char) * i));
-        if (str == NULL)
+        if (str == NULL){
+            printf("Error!");
             return str;
+        }
         str[i - 2] = c;
     }
     str[i - 1] = '\0';
@@ -120,22 +126,32 @@ int checkDecisions(int allDecisions[]){
 }
 
 
-void create_dic(Dictionary *dictionary){
+void create_dic(Dictionary *dictionaries, int *numOfDictionaries){
     int numOfLanguages = 0;
     char *languages;
+    Dictionary *current_dic;
+    dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * (*numOfDictionaries + 1));
+    if (dictionaries == NULL){
+        printf("The creation of the dictionary has failed!\n");
+        return;
+    }
+    *numOfDictionaries += 1;
+    current_dic = &dictionaries[*numOfDictionaries - 1];
     printf("Define a new dictionary:\n");
     languages = scan_no_limit();
-    dictionary->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
-    dictionary->numOfLanguages = numOfLanguages;
-    dictionary->wordList = (Word *) malloc(sizeof(Word));
-    dictionary->wordList->translations = NULL;
-    dictionary->wordList->next = NULL;
+    current_dic->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
+    current_dic->numOfLanguages = numOfLanguages;
+    current_dic->wordList = (Word *) malloc(sizeof(Word));
+    current_dic->wordList->translations = NULL;
+    current_dic->wordList->next = NULL;
     printf("The dictionary has been created successfully!\n");
     free(languages);
 }
 
 
-void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
+int print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
+    if (numOfDictionaries == 0)
+        return 1;
     printf("Choose a dictionary:\n");
     for (int i = 0; i < numOfDictionaries; i++) {
         printf("%d. ", i + 1);
@@ -146,6 +162,7 @@ void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
         }
         printf("\n");
     }
+    return 0;
 }
 
 
@@ -305,11 +322,6 @@ void destroy_linked_lst(Word *head, int numOfLang){
 void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
     int decision;
     char del_decision;
-    Dictionary *new_dictionaries_lst;
-    if (*numOfDictionaries == 0){
-        printf("The deletion of the dictionary has failed!\n");
-        return;
-    }
     print_all_dic(*numOfDictionaries, dictionaries);
     scanf("%d", &decision);
     if (decision > *numOfDictionaries){
@@ -325,23 +337,34 @@ void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
         return;
     }
     destroy_linked_lst(dictionaries[decision].wordList, dictionaries[decision].numOfLanguages);
-//    free(&dictionaries[decision]);
+    for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
+        free(dictionaries[decision].languages[i]);
+    }
+    free(dictionaries[decision].languages);
     *numOfDictionaries -= 1;
     if (*numOfDictionaries == 0){
         printf("The dictionary has been deleted successfully!\n");
         return;
     }
-    new_dictionaries_lst = (Dictionary *) malloc(*numOfDictionaries * sizeof(Dictionary));
-    int j = 0;
-    for (int i = 0; i < *numOfDictionaries + 1; i++) {
-        if (i == decision)
-            continue;
-        new_dictionaries_lst[j] = dictionaries[i];
-        j++;
+    for (int i = decision; i < *numOfDictionaries - decision; i++) {
+        dictionaries[i] = dictionaries[i + 1];
+    }
+    dictionaries = (Dictionary *) realloc(dictionaries, *numOfDictionaries * sizeof(Dictionary));
+    printf("The dictionary has been deleted successfully!\n");
+}
+
+
+void free_all(Dictionary *dictionaries, int numOfDictionaries){
+    if (numOfDictionaries == 0)
+        return;
+    for (int i = 0; i < numOfDictionaries; i++) {
+        destroy_linked_lst(dictionaries[i].wordList, dictionaries[i].numOfLanguages);
+        for (int j = 0; j < dictionaries[j].numOfLanguages; j++) {
+            free(dictionaries[j].languages[j]);
+        }
+        free(dictionaries[i].languages);
     }
     free(dictionaries);
-    dictionaries = new_dictionaries_lst;
-    printf("The dictionary has been deleted successfully!\n");
 }
 
 
@@ -353,14 +376,7 @@ int main(){
     while (1) {
         scanf("%d", &decision);
         if (decision == 1) {
-            numOfDictionaries += 1;
-            printf("a");
-            dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * numOfDictionaries);
-            printf("b");
-            if (dictionaries == NULL)
-                printf("The creation of the dictionary has failed!\n");
-            create_dic(&dictionaries[numOfDictionaries - 1]);
-            printf("c");
+            create_dic(dictionaries, &numOfDictionaries);
         } else if (1 < decision && decision < 6 && numOfDictionaries == 0) {
             printf("This option is not available right now, try again:\n");
         } else if (decision == 2) {
@@ -373,14 +389,12 @@ int main(){
             del_dic(&numOfDictionaries, dictionaries);
             empty_buffer();
         } else if (decision == 6) {
+            free_all(dictionaries, numOfDictionaries);
             return 0;
         } else {
             printf("Wrong option, try again:");
             continue;
         }
-        allDecisions[decision - 1] = 1;
-        if (checkDecisions(allDecisions)){
-            print_menu();
-        }
+        print_menu();
     }
 }
