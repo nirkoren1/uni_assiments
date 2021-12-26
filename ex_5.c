@@ -118,13 +118,11 @@ void create_dic(Dictionary *dictionaries, int *numOfDictionaries){
     char *languages;
     Dictionary *current_dic;
     *numOfDictionaries += 1;
-    printf("num of dic %d\n", *numOfDictionaries);
     current_dic = &dictionaries[*numOfDictionaries - 1];
     printf("Define a new dictionary:\n");
     languages = scan_no_limit();
     current_dic->languages = string_to_tokens_lst(languages, ",", &numOfLanguages);
     current_dic->numOfLanguages = numOfLanguages;
-    printf("num of lang %d\n", current_dic->numOfLanguages);
     current_dic->wordList = (Word *) malloc(sizeof(Word));
     current_dic->wordList->translations = NULL;
     current_dic->wordList->next = NULL;
@@ -138,7 +136,6 @@ int print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
         return 1;
     printf("Choose a dictionary:\n");
     for (int i = 0; i < numOfDictionaries; i++) {
-        printf("num of lang %d\n", dictionaries[i].numOfLanguages);
         printf("%d. ", i + 1);
         for (int j = 0; j < dictionaries[i].numOfLanguages; j++) {
             printf("%s", dictionaries[i].languages[j]);
@@ -158,7 +155,7 @@ void create_new_word(Word *head){
         iterator = iterator->next;
     }
     words = scan_no_limit();
-    if (iterator == head){
+    if (iterator == head && iterator->translations == NULL){
         iterator->translations = string_to_tokens_lst(words, ",", NULL);
     } else{
         iterator->next = (Word *) malloc(sizeof(Word));
@@ -190,7 +187,7 @@ void add_word(int numOfDictionaries, Dictionary *dictionaries){
 }
 
 
-Word *search_word(Word *head, char const word[], int return_prev){
+Word *search_word(Word *head, char word[], int return_prev){
     Word *iterator = head, *prev = head;
     while (iterator != NULL){
         if (iterator->translations == NULL)
@@ -209,7 +206,7 @@ Word *search_word(Word *head, char const word[], int return_prev){
 
 void del_word(int numOfDictionaries, Dictionary *dictionaries){
     Word *word_to_del, *head, *prev_word, *next_word;
-    int decision;
+    int decision = 0;
     char *word;
     char delete_decision;
     print_all_dic(numOfDictionaries, dictionaries);
@@ -220,6 +217,13 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
     word = scan_no_limit();
     prev_word = search_word(head, word, 1);
     free(word);
+    printf("Are you sure? (y/n)\n");
+    scanf("%c", &delete_decision);
+    empty_buffer();
+    if (delete_decision != 'y') {
+        printf("The deletion of the word has been canceled.\n");
+        return;
+    }
     if (prev_word == NULL){
         printf("The deletion of the word has failed!\n");
         return;
@@ -229,20 +233,19 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
         next_word = NULL;
     else
         next_word = word_to_del->next;
-    printf("Are you sure? (y/n)\n");
-    empty_buffer();
-    scanf("%c", &delete_decision);
-    empty_buffer();
-    if (delete_decision != 'y') {
-        printf("The deletion of the word has been canceled.\n");
-        return;
-    }
     if (word_to_del == NULL){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
             free(prev_word->translations[i]);
         }
         free(prev_word->translations);
         prev_word->translations = NULL;
+    } else if (next_word == NULL && prev_word == head){
+        for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
+            free(prev_word->translations[i]);
+        }
+        free(prev_word->translations);
+        head->next = word_to_del;
+        free(prev_word);
     } else if (next_word == NULL){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
             free(word_to_del->translations[i]);
@@ -363,15 +366,12 @@ int main(){
     print_menu();
     while (1) {
         scanf("%d", &decision);
-        printf("decision %d\n", decision);
         if (decision == 1) {
             dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * (numOfDictionaries + 1));
             if (dictionaries == NULL){
                 printf("The creation of the dictionary has failed!\n");
             }
             create_dic(dictionaries, &numOfDictionaries);
-            printf("num of dic %d lang %s ", numOfDictionaries, dictionaries[numOfDictionaries - 1].languages[1]);
-            printf("num of lang %d\n", dictionaries[numOfDictionaries - 1].numOfLanguages);
         } else if (1 < decision && decision < 6 && numOfDictionaries == 0) {
             printf("This option is not available right now, try again:\n");
             continue;
