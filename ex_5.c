@@ -70,6 +70,12 @@ char **string_to_tokens_lst(char *str, char delim[], int *size) {
 }
 
 
+/******************
+* Function Name: scan_no_limit
+* Input: none
+* Output: char[]
+* Function Operation: scans unlimited amount of digits and returns a string
+******************/
 char *scan_no_limit(){
     char c;
     int i = 1;
@@ -96,23 +102,12 @@ char *scan_no_limit(){
 }
 
 
-int checkDecisions(int allDecisions[]){
-    int cnt = 0, numOfDecisions = 5;
-    for (int i = 0; i < numOfDecisions; i++) {
-        if (allDecisions[i] == 1)
-            cnt++;
-    }
-    if (cnt == numOfDecisions){
-        for (int i = 0; i < numOfDecisions; ++i) {
-            allDecisions[i] = 0;
-        }
-        return 1;
-    }
-    else
-        return 0;
-}
-
-
+/******************
+* Function Name: create_dic
+* Input: ptr of dictionaries arr, ptr of num of dictionaries
+* Output: none
+* Function Operation: create new dictionary and puts it in the end of dic arr and later adds 1 to num of dic
+******************/
 void create_dic(Dictionary *dictionaries, int *numOfDictionaries){
     int numOfLanguages = 0;
     char *languages;
@@ -131,9 +126,15 @@ void create_dic(Dictionary *dictionaries, int *numOfDictionaries){
 }
 
 
-int print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
+/******************
+* Function Name: print_all_dic
+* Input: ptr of dictionaries arr, ptr of num of dictionaries
+* Output: none
+* Function Operation: prints all dic by order
+******************/
+void print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
     if (numOfDictionaries == 0)
-        return 1;
+        return;
     printf("Choose a dictionary:\n");
     for (int i = 0; i < numOfDictionaries; i++) {
         printf("%d. ", i + 1);
@@ -144,10 +145,15 @@ int print_all_dic(int numOfDictionaries, Dictionary *dictionaries){
         }
         printf("\n");
     }
-    return 0;
 }
 
 
+/******************
+* Function Name: create_new_word
+* Input: ptr of the head (Word type)
+* Output: none
+* Function Operation: iterates to the end of the linked list and add a new scanned word
+******************/
 void create_new_word(Word *head){
     char *words;
     Word *iterator = head;
@@ -171,6 +177,12 @@ void create_new_word(Word *head){
 }
 
 
+/******************
+* Function Name: add_word
+* Input: ptr of dictionaries arr, ptr of num of dictionaries
+* Output: none
+* Function Operation: choosing the dic where the new word would ne added then uses create_new_word to add it
+******************/
 void add_word(int numOfDictionaries, Dictionary *dictionaries){
     int decision;
     print_all_dic(numOfDictionaries, dictionaries);
@@ -187,6 +199,12 @@ void add_word(int numOfDictionaries, Dictionary *dictionaries){
 }
 
 
+/******************
+* Function Name: search_word
+* Input: ptr of the head of the linkes list, char word that is searched, bool if return prev object
+* Output: ptr of the desired word or the prev one
+* Function Operation: iterates the linked list and using strcmp to find the desired location, then return it
+******************/
 Word *search_word(Word *head, char word[], int return_prev){
     Word *iterator = head, *prev = head;
     while (iterator != NULL){
@@ -204,6 +222,12 @@ Word *search_word(Word *head, char word[], int return_prev){
 }
 
 
+/******************
+* Function Name: del_word
+* Input: ptr of dictionaries arr, int num of dictionaries
+* Output: none
+* Function Operation: uses search_word to find the prev object to del than delete it and connect the linked list properlu
+******************/
 void del_word(int numOfDictionaries, Dictionary *dictionaries){
     Word *second, *head, *first, *third;
     int decision = 0;
@@ -259,6 +283,12 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
 }
 
 
+/******************
+* Function Name: find_word
+* Input: ptr of dictionaries arr, int num of dictionaries
+* Output: none
+* Function Operation: uses search_word to find the object needed and prints the his translations
+******************/
 void find_word(int numOfDictionaries, Dictionary *dictionaries){
     int decision;
     char *word;
@@ -274,7 +304,6 @@ void find_word(int numOfDictionaries, Dictionary *dictionaries){
         return;
     }
     word_to_search = search_word(head, word, 0);
-    // need to check!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (word_to_search == NULL){
         printf("There are no translations for \"%s\" in this dictionary.\n", word);
         free(word);
@@ -291,18 +320,32 @@ void find_word(int numOfDictionaries, Dictionary *dictionaries){
 }
 
 
+/******************
+* Function Name: destroy_linked_lst
+* Input: ptr (Word) of head of the linked list, int num of languages
+* Output: none
+* Function Operation: recursivly go to all objects of the linked list and frees the translations and themselves
+******************/
 void destroy_linked_lst(Word *head, int numOfLang){
     if (head == NULL)
         return;
     destroy_linked_lst(head->next, numOfLang);
-    if (head->translations != NULL)
+    if (head->translations != NULL) {
         for (int i = 0; i < numOfLang; i++) {
             free(head->translations[i]);
         }
+        free(head->translations);
+    }
     free(head);
 }
 
 
+/******************
+* Function Name: del_dic
+* Input: ptr of dictionaries arr, ptr num of dictionaries
+* Output: none
+* Function Operation: choose which dic to del and uses destroy_linked_list then decreasing num of dic
+******************/
 void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
     int decision;
     char del_decision;
@@ -341,6 +384,12 @@ void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
 }
 
 
+/******************
+* Function Name: free_all
+* Input: ptr of dictionaries arr, int num of dictionaries
+* Output: none
+* Function Operation: iterates all the dic and del all the data in them
+******************/
 void free_all(Dictionary *dictionaries, int numOfDictionaries){
     if (numOfDictionaries == 0)
         return;
@@ -357,10 +406,10 @@ void free_all(Dictionary *dictionaries, int numOfDictionaries){
 
 int main(){
     Dictionary *dictionaries;
-    int numOfDictionaries = 0, decision, allDecisions[5] = {0};
+    int numOfDictionaries = 0, decision;
     dictionaries = (Dictionary *) malloc(sizeof(Dictionary));
-    print_menu();
     while (1) {
+        print_menu();
         scanf("%d", &decision);
         if (decision == 1) {
             dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * (numOfDictionaries + 1));
@@ -386,6 +435,5 @@ int main(){
         } else {
             printf("Wrong option, try again:");
         }
-        print_menu();
     }
 }
