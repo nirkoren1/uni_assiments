@@ -23,6 +23,12 @@ typedef struct {
 } Dictionary;
 
 
+/******************
+* Function Name: print_menu
+* Input: none
+* Output: none
+* Function Operation: prints the menu
+******************/
 void print_menu(){
     printf("Welcome to the dictionaries manager!\n"
            "Choose an option:\n"
@@ -412,9 +418,11 @@ int main(){
         print_menu();
         scanf("%d", &decision);
         if (decision == 1) {
+            // increasing the memory of dictionaries arr
             dictionaries = (Dictionary *) realloc(dictionaries, sizeof(Dictionary) * (numOfDictionaries + 1));
             if (dictionaries == NULL){
                 printf("The creation of the dictionary has failed!\n");
+                continue;
             }
             create_dic(dictionaries, &numOfDictionaries);
         } else if (1 < decision && decision < 6 && numOfDictionaries == 0) {
