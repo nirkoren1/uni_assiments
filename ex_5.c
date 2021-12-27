@@ -205,7 +205,7 @@ Word *search_word(Word *head, char word[], int return_prev){
 
 
 void del_word(int numOfDictionaries, Dictionary *dictionaries){
-    Word *word_to_del, *head, *prev_word, *next_word;
+    Word *second, *head, *first, *third;
     int decision = 0;
     char *word;
     char delete_decision;
@@ -215,53 +215,47 @@ void del_word(int numOfDictionaries, Dictionary *dictionaries){
     head = dictionaries[decision].wordList;
     printf("Enter a word in %s:\n", dictionaries[decision].languages[0]);
     word = scan_no_limit();
-    prev_word = search_word(head, word, 1);
-    free(word);
+    first = search_word(head, word, 1);
     printf("Are you sure? (y/n)\n");
     scanf("%c", &delete_decision);
     empty_buffer();
     if (delete_decision != 'y') {
         printf("The deletion of the word has been canceled.\n");
+        free(word);
         return;
     }
-    if (prev_word == NULL){
+    if (first == NULL){
         printf("The deletion of the word has failed!\n");
+        free(word);
         return;
     }
-    word_to_del = prev_word->next;
-    if (word_to_del == NULL)
-        next_word = NULL;
+    second = first->next;
+    if (second == NULL)
+        third = NULL;
     else
-        next_word = word_to_del->next;
-    if (word_to_del == NULL){
+        third = second->next;
+    if (first == head && strcmp(word, first->translations[0]) == 0 && second != NULL){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
-            free(prev_word->translations[i]);
+            free(first->translations[i]);
         }
-        free(prev_word->translations);
-        prev_word->translations = NULL;
-    } else if (next_word == NULL && prev_word == head){
+        free(first->translations);
+        dictionaries[decision].wordList = second;
+    } else if (first == head && strcmp(word, first->translations[0]) == 0){
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
-            free(prev_word->translations[i]);
+            free(first->translations[i]);
         }
-        free(prev_word->translations);
-        head->next = word_to_del;
-        free(prev_word);
-    } else if (next_word == NULL){
+        free(first->translations);
+        first->translations = NULL;
+    } else if (second != NULL) {
         for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
-            free(word_to_del->translations[i]);
+            free(second->translations[i]);
         }
-        free(word_to_del->translations);
-        free(word_to_del);
-        prev_word->next = NULL;
-    } else {
-        for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
-            free(word_to_del->translations[i]);
-        }
-        free(word_to_del->translations);
-        prev_word->next = next_word;
-        free(word_to_del);
+        free(second->translations);
+        first->next = third;
+        free(second);
     }
     printf("The word has been deleted successfully!\n");
+    free(word);
 }
 
 
@@ -312,6 +306,7 @@ void destroy_linked_lst(Word *head, int numOfLang){
 void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
     int decision;
     char del_decision;
+    Word *head;
     print_all_dic(*numOfDictionaries, dictionaries);
     scanf("%d", &decision);
     if (decision > *numOfDictionaries){
@@ -327,7 +322,8 @@ void del_dic(int *numOfDictionaries, Dictionary *dictionaries){
         printf("The deletion of the dictionary has been canceled.\n");
         return;
     }
-    destroy_linked_lst(dictionaries[decision].wordList, dictionaries[decision].numOfLanguages);
+    head = dictionaries[decision].wordList;
+    destroy_linked_lst(head, dictionaries[decision].numOfLanguages);
     for (int i = 0; i < dictionaries[decision].numOfLanguages; i++) {
         free(dictionaries[decision].languages[i]);
     }
@@ -350,8 +346,8 @@ void free_all(Dictionary *dictionaries, int numOfDictionaries){
         return;
     for (int i = 0; i < numOfDictionaries; i++) {
         destroy_linked_lst(dictionaries[i].wordList, dictionaries[i].numOfLanguages);
-        for (int j = 0; j < dictionaries[j].numOfLanguages; j++) {
-            free(dictionaries[j].languages[j]);
+        for (int j = 0; j < dictionaries[i].numOfLanguages; j++) {
+            free(dictionaries[i].languages[j]);
         }
         free(dictionaries[i].languages);
     }
@@ -385,6 +381,7 @@ int main(){
             del_dic(&numOfDictionaries, dictionaries);
         } else if (decision == 6) {
             free_all(dictionaries, numOfDictionaries);
+            printf("Bye!\n");
             return 0;
         } else {
             printf("Wrong option, try again:");
