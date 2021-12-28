@@ -414,8 +414,8 @@ int main(){
     Dictionary *dictionaries;
     int numOfDictionaries = 0, decision;
     dictionaries = (Dictionary *) malloc(sizeof(Dictionary));
+    print_menu();
     while (1) {
-        print_menu();
         scanf("%d", &decision);
         if (decision == 1) {
             // increasing the memory of dictionaries arr
@@ -443,5 +443,6 @@ int main(){
         } else {
             printf("Wrong option, try again:");
         }
+        print_menu();
     }
 }
