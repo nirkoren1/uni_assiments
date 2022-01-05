@@ -3,4 +3,4 @@ project(untitled C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(untitled ex_5.c)
+add_executable(untitled sorting.h sorting.c person.h person.c)
