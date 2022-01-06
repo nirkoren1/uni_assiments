@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include "person.h"
 
 
 int compare_str(void* arr, int i, int j) {
@@ -16,8 +17,19 @@ int compare_int(void* arr, int i, int j) {
 }
 
 
+int compare_double(void* i, void* j) {
+    double *i1 = (double *) i;
+    double *i2 = (double *) j;
+    return *i1 - *i2;
+}
+
+
 int comparePersonByWeight(void* arr, int i, int j) {
-    return compare_int(arr, i, j);
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    double w1 = p1->weight;
+    double w2 = p2->weight;
+    return compare_double(&p1->weight, &p2->weight);
 }
 
 
@@ -47,8 +59,8 @@ int compare_bmi(void *p_h1, void *p_w1, void *p_h2, void *p_w2){
 
 
 
-void swapPersons(int arr[], int i, int j) {
-    int tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-}
+//void swapPersons(int arr[], int i, int j) {
+//    int tmp = arr[i];
+//    arr[i] = arr[j];
+//    arr[j] = tmp;
+//}
