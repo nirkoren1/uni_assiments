@@ -3,16 +3,16 @@
 #include "person.h"
 
 
-int compare_str(void* arr, int i, int j) {
-    char* s1 = (char*) arr + sizeof(char *) * i;
-    char* s2 = (char*) arr + sizeof(char *) * j;
+int compare_str(void* i, void* j) {
+    char* s1 = (char*) i;
+    char* s2 = (char*) j;
     return strcmp(s1, s2);
 }
 
 
-int compare_int(void* arr, int i, int j) {
-    int *i1 = (int *) arr + i;
-    int *i2 = (int *) arr + j;
+int compare_int(void* i, void* j) {
+    int *i1 = (int *) i;
+    int *i2 = (int *) j;
     return *i1 - *i2;
 }
 
@@ -24,17 +24,36 @@ int compare_double(void* i, void* j) {
 }
 
 
+void copy_str(void *p1, void *p2) {
+    char* s1 = (char*) p1;
+    char* s2 = (char*) p2;
+    strcpy(s1, s2);
+}
+
+
 int comparePersonByWeight(void* arr, int i, int j) {
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
-    double w1 = p1->weight;
-    double w2 = p2->weight;
     return compare_double(&p1->weight, &p2->weight);
 }
 
 
+int comparePersonByHeight(void* arr, int i, int j){
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    return compare_int(&p1->height, &p2->height);
+}
+
+
+int comparePersonByBMI(void* arr, int i, int j){
+
+}
+
+
 int comparePersonByFirstName(void* arr, int i, int j) {
-    return compare_str(arr, i, j);
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    return compare_str(p1->firstName, p2->firstName);
 }
 
 
