@@ -41,8 +41,7 @@ char **string_to_tokens_lst(char str[], char delim[], int *size){
 * Output: none
 * Function Operation: swap the val of the pointers (addresses of the words)
 ******************/
-void swap(char** ptr1, char** ptr2)
-{
+void swap(char** ptr1, char** ptr2){
     char * temp = *ptr1;
     *ptr1 = *ptr2;
     *ptr2 = temp;

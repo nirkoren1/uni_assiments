@@ -6,6 +6,6 @@
 #define UNTITLED_SORTING_H
 
 
-void quicksort(void* arr, int start, int stop, void(*swap)(void*, int, int), int(*compare)(void*, int, int));
+void quicksort(void* arr, int start, int stop, void(*swap)(void*, int, int), int(*compare)(void*, void*));
 
 #endif //UNTITLED_SORTING_H
