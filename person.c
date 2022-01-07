@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "person.h"
 
 
@@ -55,6 +56,33 @@ int comparePersonByFirstName(void* arr, int i, int j) {
     Person *p2 = (Person *) arr + j;
     return compare_str(p1->firstName, p2->firstName);
 }
+
+
+void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
+    int i = 0;
+    FILE* input = fopen(inputFile, "r");
+    if (!input) {
+        printf("File not found: %s\n", inputFile);
+        return;
+    }
+    char buffer[MAX_STR_LEN];
+    fprintf(output, "-----------------------------\n");
+    while (fgets(buffer, MAX_STR_LEN, input)) {
+        i += 1;
+        persons = (Person *) realloc(persons, sizeof(Person) * i);
+
+        fprintf(output, "%s", buffer);
+    }
+    if (fclose(input)) {
+        printf("Error with closing file: %s\n", inputFile);
+        return;
+    }
+    if (fclose(output)) {
+        printf("Error with closing file: %s\n", outputFile);
+    }
+}
+}
+
 
 
 //int compare_age(void *y1, void *m1, void *d1, void *y2, void *m2, void *d2){
