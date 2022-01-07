@@ -12,15 +12,12 @@ const char* OUTPUTFILE = "sorted.txt";
 
 
 int main() {
-//    Person persons[MAX_LINES];
-//    int numOfPersons = 0;
-//    load(INPUTFILE, persons, &numOfPersons);
+    Person persons[MAX_LINES];
+    int numOfPersons = 0;
+    load(INPUTFILE, persons, &numOfPersons);
 //    quicksort(persons, 0, numOfPersons, swapPersons, comparePersonByFirstName);
 //    save(OUTPUTFILE, persons, numOfPersons);
-    Person *p1 = (Person *) malloc(sizeof(Person) * 2);
-    copy_str(p1[0].firstName, "nir");
-    p1[1].firstName = "tal";
-    printf("%d", comparePersonByFirstName(p1, 1, 0));
+    printf("%f", persons[0].weight);
 //    quicksort(l, 0, 7, swapPersons,)
     return 0;
 }
