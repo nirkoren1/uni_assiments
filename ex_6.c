@@ -18,7 +18,7 @@ int main() {
 //    quicksort(persons, 0, numOfPersons, swapPersons, comparePersonByFirstName);
 //    save(OUTPUTFILE, persons, numOfPersons);
     Person *p1 = (Person *) malloc(sizeof(Person) * 2);
-    copy_str(p1[0].firstName = "nir";
+    copy_str(p1[0].firstName, "nir");
     p1[1].firstName = "tal";
     printf("%d", comparePersonByFirstName(p1, 1, 0));
 //    quicksort(l, 0, 7, swapPersons,)

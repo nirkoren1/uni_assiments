@@ -24,7 +24,7 @@ int compare_double(void* i, void* j) {
 }
 
 
-void copy_str(void *p1, void *p2) {
+static void copy_str(void *p1, void *p2) {
     char* s1 = (char*) p1;
     char* s2 = (char*) p2;
     strcpy(s1, s2);
