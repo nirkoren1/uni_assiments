@@ -57,15 +57,15 @@ static double strToDouble(const char *str){
     }
     i = 0;
     c = str[i];
-        while (c != '\0') {
-            if (c != '.'){
-                out_d += (c - '0') * pow(10, size - 1);
-                size -= 1;
-            }
-            i += 1;
-            c = str[i];
+    while (c != '\0') {
+        if (c != '.'){
+            out_d += (c - '0') * pow(10, size - 1);
+            size -= 1;
         }
-        return out_d;
+        i += 1;
+        c = str[i];
+    }
+    return out_d;
 }
 
 
@@ -109,9 +109,20 @@ static void copy_double(void *p1, double val) {
 }
 
 
+static void convert_n_to_0(char str[]){
+    int i = 0;
+    char c = str[i];
+    while (c != '\n') {
+        i += 1;
+        c = str[i];
+    }
+    str[i] = '\0';
+}
+
+
 static void paste_person(Person persons[], int index, char *person_str){
     int size = 0;
-    char **tokens = string_to_tokens_lst(person_str, DELIM_CHAR, &size);
+    char **tokens = string_to_tokens_lst(person_str, DELIM, &size);
     copy_str(persons[index].firstName, tokens[0]);
     copy_str(persons[index].lastName, tokens[1]);
     copy_int(&persons[index].dateOfBirth.day, strToInt(tokens[2]));
@@ -159,7 +170,7 @@ int comparePersonByFirstName(void* arr, int i, int j) {
 
 
 void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
-    int i = 0;
+    int i = -1;
     FILE* input = fopen(inputFile, "r");
     if (!input) {
         printf("File not found: %s\n", inputFile);
@@ -168,7 +179,8 @@ void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
     char buffer[MAX_STR_LEN];
     while (fgets(buffer, MAX_STR_LEN, input)) {
         i += 1;
-        persons = (Person *) realloc(persons, sizeof(Person) * i);
+        convert_n_to_0(buffer);
+        printf("%s\n", buffer);
         paste_person(persons, i, buffer);
         *numOfPersonsPtr += 1;
     }

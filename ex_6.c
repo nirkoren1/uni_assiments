@@ -7,7 +7,7 @@
 #define MAX_LINES 100
 
 
-const char* INPUTFILE = "persons.txt";
+const char* INPUTFILE = "C:\\Users\\Nirkoren\\CLionProjects\\uni_assiments\\persons.txt";
 const char* OUTPUTFILE = "sorted.txt";
 
 
