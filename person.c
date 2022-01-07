@@ -66,10 +66,10 @@ void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
         return;
     }
     char buffer[MAX_STR_LEN];
-    fprintf(output, "-----------------------------\n");
     while (fgets(buffer, MAX_STR_LEN, input)) {
         i += 1;
         persons = (Person *) realloc(persons, sizeof(Person) * i);
+
 
         fprintf(output, "%s", buffer);
     }
