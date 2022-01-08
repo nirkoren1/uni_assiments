@@ -238,6 +238,7 @@ static char *double_to_str(double num, char out[]){
     int size = 0;
     double j;
     char c[2];
+    // compensation of the loss of data when passing the num to the func
     num += 2 * 10e-15;
     c[1] = '\0';
     strcpy(out, "");
