@@ -129,11 +129,72 @@ static void paste_person(Person persons[], int index, char *person_str){
     copy_int(&persons[index].dateOfBirth.month, strToInt(tokens[3]));
     copy_int(&persons[index].dateOfBirth.year, strToInt(tokens[4]));
     copy_int(&persons[index].height, strToInt(tokens[5]));
-    copy_int(&persons[index].weight, strToDouble(tokens[6]));
+    copy_double(&persons[index].weight, strToDouble(tokens[6]));
     for (int i = 0; i < size; i++) {
         free(tokens[i]);
     }
     free(tokens);
+}
+
+
+static char *int_to_str(int num, char out[]){
+    int size = 0, j;
+    char c[2];
+    c[1] = '\0';
+    strcpy(out, "");
+    j = num;
+    while (j != 0){
+        j /= 10;
+        size += 1;
+    }
+    for (int i = size - 1; i > -1; i--) {
+        j = ((int) (num * pow(10, -i)) % 10);
+        c[0] = '0' + j;
+        strcat(out, c);
+    }
+    return out;
+}
+
+
+static char *double_to_str(double num, char out[]){
+    int size = 0;
+    double j;
+    char c[2];
+    num += 2 * 10e-15;
+    c[1] = '\0';
+    strcpy(out, "");
+    j = num;
+    while (j > 1){
+        j /= 10;
+        size += 1;
+    }
+    for (int i = size - 1; i > - 3; i--) {
+        if (i == - 1)
+            strcat(out, ".");
+        j = ((int) (num * pow(10, -i)) % 10);
+        c[0] = '0' + j;
+        strcat(out, c);
+    }
+    return out;
+}
+
+
+static void person_id(Person person, char out[]){
+    char c[MAX_STR_LEN] = "";
+    strcpy(out, "");
+    strcat(out, person.firstName);
+    strcat(out, DELIM);
+    strcat(out, person.lastName);
+    strcat(out, DELIM);
+    strcat(out, int_to_str(person.dateOfBirth.day, c));
+    strcat(out, DELIM);
+    strcat(out, int_to_str(person.dateOfBirth.month, c));
+    strcat(out, DELIM);
+    strcat(out, int_to_str(person.dateOfBirth.year, c));
+    strcat(out, DELIM);
+    strcat(out, int_to_str(person.height, c));
+    strcat(out, DELIM);
+    strcat(out, double_to_str(person.weight, c));
 }
 
 
@@ -158,7 +219,17 @@ int comparePersonByHeight(void* arr, int i, int j){
 
 
 int comparePersonByBMI(void* arr, int i, int j){
-
+    double c, bmi1, bmi2;
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    bmi1 = p1->weight / (p1->height * p1->height);
+    bmi2 = p2->weight / (p2->height * p2->height);
+    c = compare_double(&bmi1, &bmi2);
+    if (c > 0)
+        return 1;
+    if (c < 0)
+        return -1;
+    return 0;
 }
 
 
@@ -166,6 +237,37 @@ int comparePersonByFirstName(void* arr, int i, int j) {
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
     return compare_str(p1->firstName, p2->firstName);
+}
+
+
+int comparePersonByLastName(void* arr, int i, int j){
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    return compare_str(p1->lastName, p2->lastName);
+}
+
+
+int comparePersonByDate(void* arr, int i, int j){
+    int result;
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    result = compare_int(&p1->dateOfBirth.year, &p2->dateOfBirth.year);
+    if (result != 0)
+        return result;
+    result = compare_int(&p1->dateOfBirth.month, &p2->dateOfBirth.month);
+    if (result != 0)
+        return result;
+    result = compare_int(&p1->dateOfBirth.day, &p2->dateOfBirth.day);
+    return result;
+}
+
+
+void swapPersons(void* arr, int i, int j){
+    Person *p1 = (Person *) arr + i;
+    Person *p2 = (Person *) arr + j;
+    Person tmp = *p1;
+    *p1 = *p2;
+    *p2 = tmp;
 }
 
 
@@ -180,7 +282,6 @@ void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
     while (fgets(buffer, MAX_STR_LEN, input)) {
         i += 1;
         convert_n_to_0(buffer);
-        printf("%s\n", buffer);
         paste_person(persons, i, buffer);
         *numOfPersonsPtr += 1;
     }
@@ -191,30 +292,19 @@ void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
 }
 
 
-
-//int compare_age(void *y1, void *m1, void *d1, void *y2, void *m2, void *d2){
-//    int val = compare_int(y1, y2);
-//    if (val != 0)
-//        return val;
-//    val = compare_int(m1, m2);
-//    if (val != 0)
-//        return val;
-//    val = compare_int(d1, d2);
-//    if (val != 0)
-//        return val;
-//    return val;
-//}
-
-int compare_bmi(void *p_h1, void *p_w1, void *p_h2, void *p_w2){
-
+void save(const char* outputFile, Person persons[], int numOfPersons){
+    FILE* output = fopen(outputFile, "w");
+    if (!output) {
+        printf("Error with file: %s\n", outputFile);
+        return;
+    }
+    char buffer[MAX_STR_LEN];
+    for (int i = 0; i < numOfPersons; i++) {
+        person_id(persons[i], buffer);
+        fprintf(output, "%s\n", buffer);
+    }
+    if (fclose(output)) {
+        printf("Error with closing file: %s\n", outputFile);
+    }
 }
 
-
-
-
-
-//void swapPersons(int arr[], int i, int j) {
-//    int tmp = arr[i];
-//    arr[i] = arr[j];
-//    arr[j] = tmp;
-//}

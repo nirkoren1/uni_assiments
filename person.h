@@ -1,7 +1,3 @@
-//
-// Created by Nirkoren on 05/01/2022.
-//
-
 #ifndef UNTITLED_PERSON_H
 #define UNTITLED_PERSON_H
 
