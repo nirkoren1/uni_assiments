@@ -258,7 +258,7 @@ static char *double_to_str(double num, char out[]){
 
 
 /******************
-* Function Name: paste_person
+* Function Name: person_id
 * Input: Persons person, str person_str
 * Output: None
 * Function Operation: creating a new line representing the person data and puts it in person_str
@@ -282,6 +282,12 @@ static void person_id(Person person, char out[]){
 }
 
 
+/******************
+* Function Name: comparePersonByWeight
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_double(person1_weight, person2_weight)
+* Function Operation: compare the weight of the two using compare_double
+******************/
 int comparePersonByWeight(void* arr, int i, int j) {
     double c;
     Person *p1 = (Person *) arr + i;
@@ -295,6 +301,12 @@ int comparePersonByWeight(void* arr, int i, int j) {
 }
 
 
+/******************
+* Function Name: comparePersonByHeight
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_int(person1_height, person2_height)
+* Function Operation: compare the height of the two using compare_int
+******************/
 int comparePersonByHeight(void* arr, int i, int j){
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
@@ -302,6 +314,12 @@ int comparePersonByHeight(void* arr, int i, int j){
 }
 
 
+/******************
+* Function Name: comparePersonByBMI
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_double(person1_bmi, person2_bmi)
+* Function Operation: calculating the bmi of the two and compare the bmi using compare_double
+******************/
 int comparePersonByBMI(void* arr, int i, int j){
     double c, bmi1, bmi2;
     Person *p1 = (Person *) arr + i;
@@ -317,6 +335,12 @@ int comparePersonByBMI(void* arr, int i, int j){
 }
 
 
+/******************
+* Function Name: comparePersonByFirstName
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_str(person1_firstName, person2_firstName)
+* Function Operation: compare the firstName of the two using compare_str
+******************/
 int comparePersonByFirstName(void* arr, int i, int j) {
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
@@ -324,6 +348,12 @@ int comparePersonByFirstName(void* arr, int i, int j) {
 }
 
 
+/******************
+* Function Name: comparePersonByLastName
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_str(person1_lastName, person2_lastName)
+* Function Operation: compare the lastName of the two using compare_str
+******************/
 int comparePersonByLastName(void* arr, int i, int j){
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
@@ -331,6 +361,12 @@ int comparePersonByLastName(void* arr, int i, int j){
 }
 
 
+/******************
+* Function Name: comparePersonByHeight
+* Input: ptr arr, int person1, int person2
+* Output: int result of compare_int(person1_year/month/day, person2_year/month/day)
+* Function Operation: compare the year/month/day of the two using compare_int
+******************/
 int comparePersonByDate(void* arr, int i, int j){
     int result;
     Person *p1 = (Person *) arr + i;
@@ -346,6 +382,12 @@ int comparePersonByDate(void* arr, int i, int j){
 }
 
 
+/******************
+* Function Name: swapPersons
+* Input: ptr arr, int person1, int person2
+* Output: None
+* Function Operation: swap the two objects in arr with assigment
+******************/
 void swapPersons(void* arr, int i, int j){
     Person *p1 = (Person *) arr + i;
     Person *p2 = (Person *) arr + j;
@@ -355,6 +397,12 @@ void swapPersons(void* arr, int i, int j){
 }
 
 
+/******************
+* Function Name: load
+* Input: char[] input_file, Person ptr persons arr, int ptr num_of_persons
+* Output: None
+* Function Operation: reading the input_file and using paste_person to load data into persons arr
+******************/
 void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
     int i = -1;
     FILE* input = fopen(inputFile, "r");
@@ -376,6 +424,12 @@ void load(const char* inputFile, Person persons[], int* numOfPersonsPtr){
 }
 
 
+/******************
+* Function Name: save
+* Input: char[] output_file, Person ptr persons arr, int num_of_persons
+* Output: None
+* Function Operation: using person_id to turn the data to line strings and outputs them to output_file
+******************/
 void save(const char* outputFile, Person persons[], int numOfPersons){
     FILE* output = fopen(outputFile, "w");
     if (!output) {
