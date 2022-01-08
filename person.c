@@ -44,6 +44,12 @@ static double compare_double(void* i, void* j) {
 }
 
 
+/******************
+* Function Name: string_to_tokens_lst
+* Input: str, deliminator, size of the lst to update
+* Output: ptr to the tokens lst
+* Function Operation: cuts the str to tokens using the strtok func shown in class
+******************/
 static char **string_to_tokens_lst(char *str, char delim[], int *size) {
     int i = -1;
     char *token = strtok(str, delim);
@@ -61,6 +67,12 @@ static char **string_to_tokens_lst(char *str, char delim[], int *size) {
 }
 
 
+/******************
+* Function Name: strToDouble
+* Input: str
+* Output: double
+* Function Operation: creating a new double number from the string provided
+******************/
 static double strToDouble(const char *str){
     int i = 0, is_float = 0, size = 0;
     double out_d = 0;
@@ -87,6 +99,12 @@ static double strToDouble(const char *str){
 }
 
 
+/******************
+* Function Name: strToInt
+* Input: str
+* Output: int
+* Function Operation: creating a new int number from the string provided
+******************/
 static int strToInt(const char *str){
     int i = 0, size = 0;
     int out_i = 0;
@@ -108,6 +126,12 @@ static int strToInt(const char *str){
 }
 
 
+/******************
+* Function Name: copy_str
+* Input: str ptr of destination, str ptr of origin (generic input)
+* Output: None
+* Function Operation: using the strcpy func
+******************/
 static void copy_str(void *p1, void *p2) {
     char* s1 = (char*) p1;
     char* s2 = (char*) p2;
@@ -115,18 +139,36 @@ static void copy_str(void *p1, void *p2) {
 }
 
 
+/******************
+* Function Name: copy_int
+* Input: int ptr of destination, int ptr of origin (generic input)
+* Output: None
+* Function Operation: regular assignment
+******************/
 static void copy_int(void *p1, int val) {
     int* s1 = (int*) p1;
     *s1 = val;
 }
 
 
+/******************
+* Function Name: copy_double
+* Input: double ptr of destination, double ptr of origin (generic input)
+* Output: None
+* Function Operation: regular assignment
+******************/
 static void copy_double(void *p1, double val) {
     double *s1 = (double *) p1;
     *s1 = val;
 }
 
 
+/******************
+* Function Name: convert_n_to_0
+* Input: str
+* Output: None
+* Function Operation: replacing '\n' with '\0'
+******************/
 static void convert_n_to_0(char str[]){
     int i = 0;
     char c = str[i];
@@ -138,6 +180,12 @@ static void convert_n_to_0(char str[]){
 }
 
 
+/******************
+* Function Name: paste_person
+* Input: Persons lst, int index, str person_str
+* Output: None
+* Function Operation: pasting the data of a given line representing a person
+******************/
 static void paste_person(Person persons[], int index, char *person_str){
     int size = 0;
     char **tokens = string_to_tokens_lst(person_str, DELIM, &size);
@@ -155,6 +203,12 @@ static void paste_person(Person persons[], int index, char *person_str){
 }
 
 
+/******************
+* Function Name: int_to_str
+* Input: int num, str out
+* Output: str out
+* Function Operation: creating a new str of the num and puts it in out
+******************/
 static char *int_to_str(int num, char out[]){
     int size = 0, j;
     char c[2];
@@ -174,6 +228,12 @@ static char *int_to_str(int num, char out[]){
 }
 
 
+/******************
+* Function Name: double_to_str
+* Input: double num, str out
+* Output: str out
+* Function Operation: creating a new str of the num and puts it in out
+******************/
 static char *double_to_str(double num, char out[]){
     int size = 0;
     double j;
@@ -197,6 +257,12 @@ static char *double_to_str(double num, char out[]){
 }
 
 
+/******************
+* Function Name: paste_person
+* Input: Persons person, str person_str
+* Output: None
+* Function Operation: creating a new line representing the person data and puts it in person_str
+******************/
 static void person_id(Person person, char out[]){
     char c[MAX_STR_LEN] = "";
     strcpy(out, "");
