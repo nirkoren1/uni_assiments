@@ -5,6 +5,12 @@
 #include <math.h>
 
 
+/******************
+* Function Name: compare_str
+* Input: void* str1, void* str2
+* Output: int 1 if str1 > str2, -1 if str1 < str2, 0 if equal (lexicographic order)
+* Function Operation: using the strcmp func
+******************/
 static int compare_str(void* i, void* j) {
     char* s1 = (char*) i;
     char* s2 = (char*) j;
@@ -12,6 +18,12 @@ static int compare_str(void* i, void* j) {
 }
 
 
+/******************
+* Function Name: compare_int
+* Input: void* num1, void* num2
+* Output: int greater than 0 if num1 > num2, less than 0 if num1 < num2, 0 if equal
+* Function Operation: subtracts between the two numbers
+******************/
 static int compare_int(void* i, void* j) {
     int *i1 = (int *) i;
     int *i2 = (int *) j;
@@ -19,6 +31,12 @@ static int compare_int(void* i, void* j) {
 }
 
 
+/******************
+* Function Name: compare_double
+* Input: void* num1, void* num2
+* Output: double greater than 0 if num1 > num2, less than 0 if num1 < num2, 0 if equal
+* Function Operation: subtract between the two numbers
+******************/
 static double compare_double(void* i, void* j) {
     double *i1 = (double *) i;
     double *i2 = (double *) j;
