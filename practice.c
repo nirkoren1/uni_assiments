@@ -4,9 +4,9 @@
 
 
 int GCDRec(int large, int small, int iter){
-    if (num2 == 1 || num1 == 1)
+    if (iter == 1)
         return 1;
-    GCD(nu)
+    return
 }
 
 int GCD(int num1, int num2){
